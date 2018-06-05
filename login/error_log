@@ -1,0 +1,3 @@
+[01-Jul-2017 12:19:29 Asia/Kolkata] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/jobjobme/public_html/login/registration_code.php:21) in /home/jobjobme/public_html/login/registration_code.php on line 85
+[01-Jul-2017 12:20:24 Asia/Kolkata] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/jobjobme/public_html/login/registration_code.php:21) in /home/jobjobme/public_html/login/registration_code.php on line 85
+[01-Jul-2017 12:20:48 Asia/Kolkata] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/jobjobme/public_html/login/registration_code.php:21) in /home/jobjobme/public_html/login/registration_code.php on line 85
