@@ -3,11 +3,11 @@ include("../database/connection.php");
 @session_start();
 
 require("../smtp/class.phpmailer.php");
-$pno = mysql_real_escape_string($_REQUEST['pno']);
-$result=mysql_query("select * from sv_users where phone_no = '$pno'");
-$row = mysql_fetch_array($result);
-$email_id=mysql_real_escape_string($row['email']);
-$rowcount = mysql_num_rows($result);
+$pno = mysqli_real_escape_string($con, $_REQUEST['pno']);
+$result=mysqli_query($con, "select * from sv_users where phone_no = '$pno'");
+$row = mysqli_fetch_array($result);
+$email_id=mysqli_real_escape_string($con, $row['email']);
+$rowcount = mysqli_num_rows($result);
 if ($rowcount== 0)
 {
 	echo "Invalid";
@@ -27,13 +27,13 @@ $rnd_id = strrev(str_replace("/","",$rnd_id));
 $rnd_id = substr($rnd_id,0,$random_id_length);
 
 $pas=md5($rnd_id);
-if(mysql_query("update sv_users set password='$pas' where phone_no='$pno'"))
+if(mysqli_query($con, "update sv_users set password='$pas' where phone_no='$pno'"))
 {
 if($email_id!='')
 {
 $subject = 'Password Details'; 
-$pno= mysql_real_escape_string($pno); 
-$random_no = mysql_real_escape_string($rnd_id); 
+$pno= mysqli_real_escape_string($con, $pno); 
+$random_no = mysqli_real_escape_string($con, $rnd_id); 
 $message = '<!DOCTYPE HTML>'. 
 '<head>'. 
 '<meta http-equiv="content-type" content="text/html">'. 
@@ -53,9 +53,9 @@ $message = '<!DOCTYPE HTML>'.
 'All rights reserved @ '.$site_name. 
 '</div>'. 
 '</body>'; 
-$to      = mysql_real_escape_string($email_id);              
+$to      = mysqli_real_escape_string($con, $email_id);              
 $subject = $site_name.' - Password Details';  
-$from    = mysql_real_escape_string($admin_email);                               
+$from    = mysqli_real_escape_string($con, $admin_email);                               
 $headers  = "From: " . $from . "\r\n"; 
 $headers .= "MIME-Version: 1.0\r\n"; 
 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n"; 

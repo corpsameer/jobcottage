@@ -62,24 +62,24 @@
 									<tbody>
 									<?php		
 									$sno=0;
-									$res=mysql_query("select * from sv_booking ORDER BY id DESC");
-									while($row=mysql_fetch_array($res))
+									$res=mysqli_query($con, "select * from sv_booking ORDER BY id DESC");
+									while($row=mysqli_fetch_array($res))
 									{
 										$sno++;
-										$shop_id=mysql_real_escape_string($row['shop_id']);
-										$query=mysql_fetch_array(mysql_query("select * from sv_shop where id='$shop_id'"));
+										$shop_id=mysqli_real_escape_string($con, $row['shop_id']);
+										$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$shop_id'"));
 										$shop_pno=$row['phone_no'];
-										$sv_user=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$shop_pno'"));
+										$sv_user=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$shop_pno'"));
 
-										$sid=mysql_real_escape_string($row['services_id']);
+										$sid=mysqli_real_escape_string($con, $row['services_id']);
 										$sel=explode("," , $sid);
 										$lev=count($sel);
 										$ser_name="";
 										for($i=0;$i<$lev;$i++)
 										{
 											$serid=$sel[$i];				
-											$res2=mysql_query("select * from sv_services where id='$serid'");
-											$fet2=mysql_fetch_array($res2);
+											$res2=mysqli_query($con, "select * from sv_services where id='$serid'");
+											$fet2=mysqli_fetch_array($res2);
 											$ser_name.=$fet2['services_name'];				
 											$ser_name.=", ";
 										}	

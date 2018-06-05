@@ -3,14 +3,14 @@
 include("../database/connection.php");
 @session_start();
 if(isset($_SESSION['phone_no'])) { 
-	$phone_no=mysql_real_escape_string($_SESSION['phone_no']);			
-	$query=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no'"));
+	$phone_no=mysqli_real_escape_string($con, $_SESSION['phone_no']);			
+	$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no'"));
 ?>
 <?php 
 include('../header.php');
 ?>
 <div class="profile_main">
-<h1 class="text-center"><?php echo get_record(153,$lang,$en);?></h1>
+<h1 class="text-center"><?php echo get_record(153,$lang,$en,$con);?></h1>
 </div>
 	<div class="min-space"></div>
 
@@ -32,18 +32,18 @@ else
 
 	<div class="row">
 			<?php 
-			$book_query=mysql_query("select * from sv_booking where phone_no='$phone_no' order by id DESC");
-			$num_row=mysql_num_rows($book_query);
+			$book_query=mysqli_query($con, "select * from sv_booking where phone_no='$phone_no' order by id DESC");
+			$num_row=mysqli_num_rows($book_query);
 			if($num_row=="")
 			{
 			  ?>
-			  <div class="err-msg"><?php echo get_record(181,$lang,$en);?></div>
+			  <div class="err-msg"><?php echo get_record(181,$lang,$en,$con);?></div>
 			<?php
 			} else {
-			while($book=mysql_fetch_array($book_query))
+			while($book=mysqli_fetch_array($book_query))
 			{
 				
-				$ser_id=mysql_real_escape_string($book['services_id']);
+				$ser_id=mysqli_real_escape_string($con, $book['services_id']);
 				$sel=explode("," , $ser_id);
 				$lev=count($sel);
 				$ser_name="";
@@ -62,17 +62,17 @@ else
 						}
 					
 					
-					$res1=mysql_query("select * from sv_services where $ser_id='$id' and lang_code='$lang'");
+					$res1=mysqli_query($con, "select * from sv_services where $ser_id='$id' and lang_code='$lang'");
 					
 					
-					$fet1=mysql_fetch_array($res1);
+					$fet1=mysqli_fetch_array($res1);
 					$ser_name.='<div class="book-profile">'.$fet1['services_name'].'</div>';
 					
 					$ser_name.=",";
 					$ser_name=trim($ser_name,",");
 				}
 				$shop_id=$book['shop_id'];
-				$shop=mysql_fetch_array(mysql_query("select * from sv_shop where id='$shop_id'"));
+				$shop=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$shop_id'"));
 				
 				
 				 $booking_time=$book['booking_time'];
@@ -152,7 +152,7 @@ $(function(){
 				
     	<div class="well well-sm">
             <div class="text-right">
-                <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box<?php echo $book_id; ?>"><?php echo get_record(154,$lang,$en);?></a>
+                <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box<?php echo $book_id; ?>"><?php echo get_record(154,$lang,$en,$con);?></a>
             </div>
         
             <div class="row" id="post-review-box<?php echo $book_id; ?>" style="display:none;">
@@ -165,8 +165,8 @@ $(function(){
                         <div class="text-right samebtn">
                             <div class="stars starrr" data-rating="0"></div>
                             <a class="btn btn-danger btn-sm" href="#" id="close-review-box<?php echo $book_id; ?>" style="display:none; margin-right: 10px;">
-                            <span class="glyphicon glyphicon-remove"></span><?php echo get_record(155,$lang,$en);?></a>
-                            <button class="btn btn-success btn-lg" type="submit"><?php echo get_record(156,$lang,$en);?></button>
+                            <span class="glyphicon glyphicon-remove"></span><?php echo get_record(155,$lang,$en,$con);?></a>
+                            <button class="btn btn-success btn-lg" type="submit"><?php echo get_record(156,$lang,$en,$con);?></button>
                         </div>
                     </form>
                 </div>
@@ -183,7 +183,7 @@ $(function(){
 					
 					  <?php echo $ser_name; ?>
 				</div>
-				<div class="total-price col-lg-2"><?php echo get_record(157,$lang,$en);?>- <?php if($book['total_amt']=="") { echo "0"; } else { echo $book['total_amt']; }?>&nbsp;<?php echo $currency_mode; ?></div>
+				<div class="total-price col-lg-2"><?php echo get_record(157,$lang,$en,$con);?>- <?php if($book['total_amt']=="") { echo "0"; } else { echo $book['total_amt']; }?>&nbsp;<?php echo $currency_mode; ?></div>
 
 			</div>
 			</div>

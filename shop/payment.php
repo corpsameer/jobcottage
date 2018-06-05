@@ -4,9 +4,9 @@ include ('../database/connection.php');
 include ('../header.php');
 if(isset($_SESSION['phone_no']))
 {
-$order_id=  mysql_real_escape_string($_SESSION["id"]);
+$order_id=  mysqli_real_escape_string($con, $_SESSION["id"]);
 //Set useful variables for paypal form 
-$query=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
+$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_admin_login"));
 $site_mode=$query['paypal_site_mode'];
 $cur_code=$query['currency_mode'];
 
@@ -20,16 +20,16 @@ else if($site_mode=="live")
 ?>
  <section class="teaser bg-top ">
  <div class="min-space"></div><div class="min-space"></div><div class="min-space"></div>
- <h3 class="sub-title"><?php echo get_record(241,$lang,$en);?></h3>
+ <h3 class="sub-title"><?php echo get_record(241,$lang,$en,$con);?></h3>
 <div class="min-space"></div>
 <div class="min-space"></div>
 </section>
 <!--fetch products from the database--->
 <?php
-		$results = mysql_query("select * from sv_booking where id='$order_id'");
-		while($row=mysql_fetch_array($results))
+		$results = mysqli_query($con, "select * from sv_booking where id='$order_id'");
+		while($row=mysqli_fetch_array($results))
 		{
-			$services_id=mysql_real_escape_string($row['services_id']);
+			$services_id=mysqli_real_escape_string($con, $row['services_id']);
 			$sel=explode("," , $services_id);
 			$lev=count($sel);
 			$ser_name="";
@@ -44,9 +44,9 @@ else if($site_mode=="live")
 							{
 							$ser_id="page_parent";
 							}				
-				$res2=mysql_query("select * from sv_services where $ser_id='$catid' and lang_code='$lang'");
+				$res2=mysqli_query($con, "select * from sv_services where $ser_id='$catid' and lang_code='$lang'");
 				
-				$fet2=mysql_fetch_array($res2);
+				$fet2=mysqli_fetch_array($res2);
 				$ser_name.=$fet2['services_name'];				
 				$ser_name.=" , ";
 			}	
@@ -70,9 +70,9 @@ else if($site_mode=="live")
 
 <div class="container text-center">
 <div class="min-space"></div>
-	<label><?php echo get_record(183,$lang,$en);?> </label> - <?php echo $ser_name; ?><br>
-     <label><?php echo get_record(235,$lang,$en);?></label> -  <?php echo $booking_date; ?><br>
-    <label><?php echo get_record(196,$lang,$en);?></label> - <?php echo $price; ?> <?php echo $cur_code; ?>
+	<label><?php echo get_record(183,$lang,$en,$con);?> </label> - <?php echo $ser_name; ?><br>
+     <label><?php echo get_record(235,$lang,$en,$con);?></label> -  <?php echo $booking_date; ?><br>
+    <label><?php echo get_record(196,$lang,$en,$con);?></label> - <?php echo $price; ?> <?php echo $cur_code; ?>
     <form action="<?php echo $paypal_url; ?>" method="post">
 
         <!-- Identify your business so that you can collect the payments. -->
@@ -90,7 +90,7 @@ else if($site_mode=="live")
         <!-- Specify URLs -->
         <input type='hidden' name='cancel_return' value='<?php echo $query['site_url'];?>shop/cancel.php'>
 		<input type='hidden' name='return' value='<?php echo $query['site_url'];?>shop/success.php'>
-		<input type="submit" name="submit" value="<?php echo get_record(242,$lang,$en);?>" class="paynow">
+		<input type="submit" name="submit" value="<?php echo get_record(242,$lang,$en,$con);?>" class="paynow">
      
     
     </form>

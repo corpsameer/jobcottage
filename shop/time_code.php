@@ -12,8 +12,8 @@
 
 	   $name='';
 		$id='';
-		$res=mysql_query("select * from sv_booking where booking_date='$booking_date' and booking_time='$booking_time'");
-		$sv_num_row=mysql_num_rows($res);
+		$res=mysqli_query($con, "select * from sv_booking where booking_date='$booking_date' and booking_time='$booking_time'");
+		$sv_num_row=mysqli_num_rows($res);
 		if($sv_num_row<$booking_per_hour)
 		{
 			for($i=$start_time;$i<=$end_time;$i++)

@@ -1,11 +1,11 @@
 <?php
 ob_start();
 include('../database/connection.php');
-mysql_query("SET NAMES utf8");
-mysql_query("SET CHARACTER SET utf8");
+mysqli_query($con, "SET NAMES utf8");
+mysqli_query($con, "SET CHARACTER SET utf8");
 
 
-//$type=mysql_real_escape_string($_REQUEST['action']);
+//$type=mysqli_real_escape_string($con, $_REQUEST['action']);
 $type=$_REQUEST['typ'];
 if($type=='add')
 {
@@ -52,13 +52,13 @@ if($type=='add')
 			   }
 			   else
 			   {
-				    $checkwel=mysql_query("select * from sv_services where service_img='$file_name' and page_parent='0'");
-					$rowline=mysql_fetch_array($checkwel);
-					$checkrow=mysql_num_rows($checkwel);
+				    $checkwel=mysqli_query($con, "select * from sv_services where service_img='$file_name' and page_parent='0'");
+					$rowline=mysqli_fetch_array($checkwel);
+					$checkrow=mysqli_num_rows($checkwel);
 					$checkid=$rowline['id'];
 					if($checkrow==0)
 					{
-				    $page_parent=mysql_insert_id();
+				    $page_parent=mysqli_insert_id();
 					}
 					else
 					{
@@ -67,9 +67,9 @@ if($type=='add')
 				  
 			   }
 			   
-				mysql_query("SET NAMES utf8");
-		       mysql_query("SET CHARACTER SET utf8");
-				mysql_query("insert into sv_services(services_name,service_img,lang_code,page_parent)values('$pagename','$file_name','$code','$page_parent')");
+				mysqli_query($con, "SET NAMES utf8");
+		       mysqli_query($con, "SET CHARACTER SET utf8");
+				mysqli_query($con, "insert into sv_services(services_name,service_img,lang_code,page_parent)values('$pagename','$file_name','$code','$page_parent')");
 				
 			   
 			}
@@ -84,8 +84,8 @@ else if($type=='update')
 {
 	$flag=0;
 	$id=$_POST['id'];	
-	$res=mysql_query("select * from sv_services where id='$id'");
-	$fet=mysql_fetch_array($res);
+	$res=mysqli_query($con, "select * from sv_services where id='$id'");
+	$fet=mysqli_fetch_array($res);
 	$old_file="img/".$fet['service_img'];
 	$file_name = $_FILES['service_img']['name'];
 	$random_digit=rand(0000,9999);
@@ -115,8 +115,8 @@ else if($type=='update')
 	}
 	else 
 	{
-		$old_file=mysql_real_escape_string($fet['service_img']);
-		$file_name=mysql_real_escape_string($_REQUEST['old_simage']);
+		$old_file=mysqli_real_escape_string($con, $fet['service_img']);
+		$file_name=mysqli_real_escape_string($con, $_REQUEST['old_simage']);
 	}
 	
 	$sname=$_POST['sname'];
@@ -128,30 +128,30 @@ else if($type=='update')
 		$pagename=$sname[$index];
 			if($code==$en)
 			{
-				mysql_query("SET NAMES utf8");
-		       mysql_query("SET CHARACTER SET utf8");
-				mysql_query("update sv_services set services_name='$pagename', service_img='$file_name',lang_code='$en' where id='$id'");
+				mysqli_query($con, "SET NAMES utf8");
+		       mysqli_query($con, "SET CHARACTER SET utf8");
+				mysqli_query($con, "update sv_services set services_name='$pagename', service_img='$file_name',lang_code='$en' where id='$id'");
 			}
 			else
 			{
 				
 				
 				
-				$numqry=mysql_query("select * from sv_services where lang_code='$code' and page_parent='$id'");
+				$numqry=mysqli_query($con, "select * from sv_services where lang_code='$code' and page_parent='$id'");
 				
-				$numrows=mysql_num_rows($numqry);
+				$numrows=mysqli_num_rows($numqry);
 				
 				if($numrows==0)
 				{
-					mysql_query("SET NAMES utf8");
-		            mysql_query("SET CHARACTER SET utf8");
-					mysql_query("insert into sv_services (services_name,service_img,lang_code,page_parent) values ('$pagename','$file_name','$code','$id')");
+					mysqli_query($con, "SET NAMES utf8");
+		            mysqli_query($con, "SET CHARACTER SET utf8");
+					mysqli_query($con, "insert into sv_services (services_name,service_img,lang_code,page_parent) values ('$pagename','$file_name','$code','$id')");
 				}
 				if($numrows==1)
 				{
-					mysql_query("SET NAMES utf8");
-		            mysql_query("SET CHARACTER SET utf8");
-					mysql_query("update sv_services set services_name='$pagename',service_img='$file_name' where page_parent='$id' and lang_code='$code'");
+					mysqli_query($con, "SET NAMES utf8");
+		            mysqli_query($con, "SET CHARACTER SET utf8");
+					mysqli_query($con, "update sv_services set services_name='$pagename',service_img='$file_name' where page_parent='$id' and lang_code='$code'");
 				}
 				
 				
@@ -181,10 +181,10 @@ else if($type=='update')
 }	
 if($_REQUEST['type']=='delete')
 {
-	$hid=mysql_real_escape_string($_REQUEST["hid"]);
+	$hid=mysqli_real_escape_string($con, $_REQUEST["hid"]);
     unlink('img/'.$_REQUEST['simage']);	
-	mysql_query("delete from sv_services where id='$hid'");
-	mysql_query("delete from sv_services where page_parent='$hid'");
+	mysqli_query($con, "delete from sv_services where id='$hid'");
+	mysqli_query($con, "delete from sv_services where page_parent='$hid'");
 		$msg="Deleted";	
 		header("Location:services.php?msg=".$msg);	
 		

@@ -5,10 +5,10 @@
 <?php 
 if(isset($_REQUEST['lang_id']))
 	{		
-		$lang_id=mysql_real_escape_string($_REQUEST['lang_id']);
-		$res=mysql_query("select * from sv_language where lang_id='$lang_id'");
+		$lang_id=mysqli_real_escape_string($con, $_REQUEST['lang_id']);
+		$res=mysqli_query($con, "select * from sv_language where lang_id='$lang_id'");
 		
-		$row=mysql_num_rows($res);
+		$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 		  $id="";
@@ -19,11 +19,11 @@ if(isset($_REQUEST['lang_id']))
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);
-			$id=mysql_real_escape_string($fet['lang_id']);	
-			$lang_name=mysql_real_escape_string($fet['lang_name']);	
-			$lang_code=mysql_real_escape_string($fet['lang_code']);	
-			$flag_img=mysql_real_escape_string($fet['lang_flag']);
+			$fet=mysqli_fetch_array($res);
+			$id=mysqli_real_escape_string($con, $fet['lang_id']);	
+			$lang_name=mysqli_real_escape_string($con, $fet['lang_name']);	
+			$lang_code=mysqli_real_escape_string($con, $fet['lang_code']);	
+			$flag_img=mysqli_real_escape_string($con, $fet['lang_flag']);
 			$typ="update";	
 		}		
 	}
@@ -153,12 +153,12 @@ else
 									<tbody>
 									<?php
 										$sno=0;
-										$res=mysql_query("select * from sv_language");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_language");
+										while($row=mysqli_fetch_array($res))
 										{
 											$sno++;
-											$id=mysql_real_escape_string($row['lang_id']);	
-											$flag_img=mysql_real_escape_string($row['lang_flag']);
+											$id=mysqli_real_escape_string($con, $row['lang_id']);	
+											$flag_img=mysqli_real_escape_string($con, $row['lang_flag']);
 			
 									?>  									
 										<tr>

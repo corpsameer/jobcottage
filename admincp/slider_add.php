@@ -1,7 +1,7 @@
 <?php
 ob_start();
 include('../database/connection.php');
-//$type=mysql_real_escape_string($_REQUEST['action']);
+//$type=mysqli_real_escape_string($con, $_REQUEST['action']);
 $type=$_REQUEST['typ'];
 if($type=='add')
 {
@@ -35,7 +35,7 @@ if($type=='add')
 			}
 			else 
 				$file_name="";	
-  mysql_query("insert into sv_slider(slider_img)values('$file_name')");
+  mysqli_query($con, "insert into sv_slider(slider_img)values('$file_name')");
 	$msg="Inserted";				
 			header("Location:home-slider.php?msg=".$msg);
 }
@@ -46,8 +46,8 @@ else if($type=='update')
 {
 	$flag=0;
 	$id=$_POST['id'];
-	$res=mysql_query("select * from sv_slider where id='$id'");
-	$fet=mysql_fetch_array($res);
+	$res=mysqli_query($con, "select * from sv_slider where id='$id'");
+	$fet=mysqli_fetch_array($res);
 	$old_file="../slider-img/".$fet['slider_img'];
 	$file_name = $_FILES['slider_img']['name'];
 	$random_digit=rand(0000,9999);
@@ -77,12 +77,12 @@ else if($type=='update')
 	}
 	else 
 	{
-		$old_file=mysql_real_escape_string($fet['slider_img']);
-		$file_name=mysql_real_escape_string($old_file);
+		$old_file=mysqli_real_escape_string($con, $fet['slider_img']);
+		$file_name=mysqli_real_escape_string($old_file);
 	}
 	if($flag=="0")
 	{		
-		mysql_query("update sv_slider set slider_img='$file_name' where id='$id'");
+		mysqli_query($con, "update sv_slider set slider_img='$file_name' where id='$id'");
 			$msg="Updated";		
 		header("Location:home-slider.php?msg=".$msg);	
 	}
@@ -101,8 +101,8 @@ else if($type=='update')
 
 else if($type=='delete')
 {
-	$hid=mysql_real_escape_string($_REQUEST["hid"]);		
-	if(mysql_query("delete from sv_slider where id='$hid'")) 
+	$hid=mysqli_real_escape_string($con, $_REQUEST["hid"]);		
+	if(mysqli_query($con, "delete from sv_slider where id='$hid'")) 
 		echo "Deleted";
 	else 
 		echo "Error";

@@ -5,9 +5,9 @@
 include("../database/connection.php");
 @session_start();
 if(isset($_SESSION['phone_no'])) { 
-$phone_no=mysql_real_escape_string($_SESSION['phone_no']);		
+$phone_no=mysqli_real_escape_string($con, $_SESSION['phone_no']);		
 	
-	$query=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no'"));
+	$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no'"));
 ?>
 <?php 
 include('../header.php');
@@ -76,10 +76,10 @@ $(function() {
 				<div class="panel panel-login">
 					<div class="panel-heading">
 							<div class="col-xs-6 login_right_brdr">
-								<a href="#" class="active" id="login-form-link"><?php echo get_record(174,$lang,$en);?></a>
+								<a href="#" class="active" id="login-form-link"><?php echo get_record(174,$lang,$en,$con);?></a>
 							</div>
 							<div class="col-xs-6">
-								<a href="#" id="register-form-link"><?php echo get_record(175,$lang,$en);?></a>
+								<a href="#" id="register-form-link"><?php echo get_record(175,$lang,$en,$con);?></a>
 							</div>
 						<hr>
 					</div>
@@ -88,19 +88,19 @@ $(function() {
 							<div class="col-lg-12">
 								<form id="login-form" action="javascript:edit_profile('add')" method="post" role="form" style="display: block;">
 								<div class="form-group col-lg-6">
-										<label><?php echo get_record(96,$lang,$en);?><span class="star">*</span></label>
+										<label><?php echo get_record(96,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="text" name="user_name" value="<?php echo $query['user_name']; ?>" required="" id="user_name" class="form-control" >
 									</div>
 									<div class="form-group col-lg-6">
-										<label><?php echo get_record(93,$lang,$en);?><span class="star">*</span></label>
+										<label><?php echo get_record(93,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="text" name="phone_no" disabled="disabled" required="" id="phone_no" class="form-control" value="<?php echo $query['phone_no']; ?>">
 									</div>
 									<div class="form-group col-lg-6">
-										<label><?php echo get_record(97,$lang,$en);?><span class="star">*</span></label>
+										<label><?php echo get_record(97,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="text" name="email" required="" id="email" class="form-control" value="<?php echo $query['email']; ?>">
 									</div>
 									<div class="form-group col-lg-6">
-										<label><?php echo get_record(98,$lang,$en);?><span class="star">*</span></label>
+										<label><?php echo get_record(98,$lang,$en,$con);?><span class="star">*</span></label>
 										<select id="gender" name="gender" class="form-control" required>
 											<option value="male" <?php { if($query['gender']=="male") echo "selected='selected'"; }?>>Male</option>	
 											<option value="female" <?php { if($query['gender']=="female") echo "selected='selected'"; }?>>Female</option>
@@ -111,9 +111,9 @@ $(function() {
 										<div class="row">
 											<div class="col-sm-2">
 											   <?php if($demo_mode=="off") { ?>
-												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(180,$lang,$en);?>">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(180,$lang,$en,$con);?>">
 												 <?php } else { ?>
-												 <input type="button" disabled="disabled" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(180,$lang,$en);?>"> <span class="demomode">[Demo Mode Enabled]</span>
+												 <input type="button" disabled="disabled" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(180,$lang,$en,$con);?>"> <span class="demomode">[Demo Mode Enabled]</span>
 												 <?php } ?>
 											</div>
 										</div>
@@ -121,15 +121,15 @@ $(function() {
 								</form>
 								<form id="register-form" action="javascript:change_pwd();" method="post" role="form" style="display: none;">
 								<div class="form-group col-lg-4">
-									<label><?php echo get_record(176,$lang,$en);?><span class="star">*</span></label>
+									<label><?php echo get_record(176,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="password" required="" name="cur_pwd" id="cur_pwd" class="form-control" value="">
 									</div>
 									<div class="form-group col-md-4">
-										<label><?php echo get_record(177,$lang,$en);?><span class="star">*</span></label>
+										<label><?php echo get_record(177,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="password" name="new_pwd" id="new_pwd" required="" class="form-control" value="">
 									</div>									
 									<div class="form-group col-md-4">
-										<label><?php echo get_record(178,$lang,$en);?><span class="star">*</span></label>
+										<label><?php echo get_record(178,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="password" required="" name="confirm_pwd" id="confirm_pwd" class="form-control" >
 									</div>
 																									
@@ -137,9 +137,9 @@ $(function() {
 										<div class="row">
 											<div class="col-sm-2">
 											   <?php if($demo_mode=="off") { ?>
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="<?php echo get_record(179,$lang,$en);?>">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="<?php echo get_record(179,$lang,$en,$con);?>">
 											   <?php } else { ?>
-											   <input type="button" disabled="disabled" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(179,$lang,$en);?>"><span class="demomode">[Demo Mode Enabled]</span>
+											   <input type="button" disabled="disabled" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(179,$lang,$en,$con);?>"><span class="demomode">[Demo Mode Enabled]</span>
 											   <?php } ?>
 											</div>
 										</div>

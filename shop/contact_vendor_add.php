@@ -2,28 +2,28 @@
 ob_start();
 @session_start();
 include('../database/connection.php');
-$name=mysql_real_escape_string($_POST['name']);
-$email=mysql_real_escape_string($_POST['email']);
-$pho_no=mysql_real_escape_string($_POST['phone_no']);
-$message=mysql_real_escape_string($_POST['message']);
-$vendor_id=mysql_real_escape_string($_POST['vendor_id']);
+$name=mysqli_real_escape_string($con, $_POST['name']);
+$email=mysqli_real_escape_string($con, $_POST['email']);
+$pho_no=mysqli_real_escape_string($con, $_POST['phone_no']);
+$message=mysqli_real_escape_string($con, $_POST['message']);
+$vendor_id=mysqli_real_escape_string($con, $_POST['vendor_id']);
 require("../smtp/class.phpmailer.php");
-mysql_query("insert into  sv_contact_vendor(name,phone_no,email,message,vendor_id)values('$name','$pho_no','$email','$message','$vendor_id')");
-$query1=mysql_fetch_array(mysql_query("select * from sv_admin_login"));
-$site_url=mysql_real_escape_string($query1['site_url']);
-$logo=mysql_real_escape_string($query1['logo']);
+mysqli_query($con, "insert into  sv_contact_vendor(name,phone_no,email,message,vendor_id)values('$name','$pho_no','$email','$message','$vendor_id')");
+$query1=mysqli_fetch_array(mysqli_query($con, "select * from sv_admin_login"));
+$site_url=mysqli_real_escape_string($con, $query1['site_url']);
+$logo=mysqli_real_escape_string($con, $query1['logo']);
 $imgSrc=$site_url."admincp/admin-logo/$logo";
-$mail_option= mysql_real_escape_string($query1['mail_option']);
-$contact=mysql_fetch_array(mysql_query("select * from sv_contact_vendor order by id DESC limit 1"));		
-$site_name = mysql_real_escape_string($query1['site_name']);
+$mail_option= mysqli_real_escape_string($con, $query1['mail_option']);
+$contact=mysqli_fetch_array(mysqli_query($con, "select * from sv_contact_vendor order by id DESC limit 1"));		
+$site_name = mysqli_real_escape_string($con, $query1['site_name']);
 $subject= 'New Enquiry Received'; 
-$name=mysql_real_escape_string($contact['name']); 
-$email= mysql_real_escape_string($contact['email']); 
-$pho_no=mysql_real_escape_string($contact['phone_no']); 
-$msg=mysql_real_escape_string($contact['message']); 
-$contact_vendor=mysql_fetch_array(mysql_query("select * from sv_shop where id='$vendor_id'"));
+$name=mysqli_real_escape_string($con, $contact['name']); 
+$email= mysqli_real_escape_string($con, $contact['email']); 
+$pho_no=mysqli_real_escape_string($con, $contact['phone_no']); 
+$msg=mysqli_real_escape_string($con, $contact['message']); 
+$contact_vendor=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$vendor_id'"));
 $vendor_pno=$contact_vendor['phone_no'];
-$vendor_email=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$vendor_pno'"));
+$vendor_email=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$vendor_pno'"));
 $vendor_email=$vendor_email['email'];
 
 $message = '<!DOCTYPE HTML>'. 
@@ -49,9 +49,9 @@ $message = '<!DOCTYPE HTML>'.
 '</body>'; 
 
 
-$to      = mysql_real_escape_string($vendor_email);              
+$to      = mysqli_real_escape_string($con, $vendor_email);              
 $subject = 'New Enquiry Received - '.$site_name; 
-$from    = mysql_real_escape_string($query1['email_id']);                              
+$from    = mysqli_real_escape_string($con, $query1['email_id']);                              
 $headers  = "From: " . $from . "\r\n"; 
 $headers .= "MIME-Version: 1.0\r\n"; 
 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n"; 

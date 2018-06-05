@@ -1,8 +1,8 @@
 <?php
 include('../database/connection.php');
 
-$services=mysql_real_escape_string($_REQUEST['services']);
-$city=mysql_real_escape_string($_REQUEST['city']);
+$services=mysqli_real_escape_string($con, $_REQUEST['services']);
+$city=mysqli_real_escape_string($con, $_REQUEST['city']);
 
 
 if($services!="")
@@ -25,11 +25,11 @@ if($services!="")
 			$sql.="and sv_shop.city like '%$city%' and status='approved'";	
 		}
 
-		//$sql_query=mysql_query("select * from sv_shop inner join sv_seller_services on sv_shop.id=sv_seller_services.shop_id $sql ");
+		//$sql_query=mysqli_query($con, "select * from sv_shop inner join sv_seller_services on sv_shop.id=sv_seller_services.shop_id $sql ");
 		
 	}
-		$sql_query=mysql_query("select * from sv_shop inner join sv_seller_services on sv_seller_services.shop_id=sv_shop.id $sql group by sv_shop.id");
-		while($row=mysql_fetch_array($sql_query))
+		$sql_query=mysqli_query($con, "select * from sv_shop inner join sv_seller_services on sv_seller_services.shop_id=sv_shop.id $sql group by sv_shop.id");
+		while($row=mysqli_fetch_array($sql_query))
 		{	
 			$shop_id=$row['shop_id'];
 	?>
@@ -92,9 +92,9 @@ else
 			$sql.="where status='approved'";
 		}
 		
-$sql_query=mysql_query("select * from sv_shop $sql");
+$sql_query=mysqli_query($con, "select * from sv_shop $sql");
 
-while($row=mysql_fetch_array($sql_query))
+while($row=mysqli_fetch_array($sql_query))
 {
 	$shop_id=$row['id'];
 	?>

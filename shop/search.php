@@ -19,7 +19,7 @@ include('../header.php');
 	}
 ?>
 <div class="profile_main sv_main_search">
-<h1 class="text-center"><?php echo get_record(70,$lang,$en);?> </h1>
+<h1 class="text-center"><?php echo get_record(70,$lang,$en,$con);?> </h1>
 <div class="container">
 <div class="col-lg-12">
 		<div class="filter">
@@ -32,10 +32,10 @@ include('../header.php');
 
 
 				
-					$res=mysql_query("select * from sv_services where lang_code='$lang'");
+					$res=mysqli_query($con, "select * from sv_services where lang_code='$lang'");
 					
 					
-					while($row=mysql_fetch_array($res))
+					while($row=mysqli_fetch_array($res))
 					{
 						if($lang==$en)
 						{
@@ -58,11 +58,11 @@ include('../header.php');
 					
 			<div class="form-group col-md-5">
 			
-			  <input class="form-control" id="city" placeholder="<?php echo get_record(243,$lang,$en);?>" name="city" value="<?php echo $city; ?>"> 
+			  <input class="form-control" id="city" placeholder="<?php echo get_record(243,$lang,$en,$con);?>" name="city" value="<?php echo $city; ?>"> 
 			  </div>
 			  
 			  <div class="form-group col-md-2">
-			 		<button class="form-control btn btn-login sv_search_button" onclick="javascript:filter_funct();"><?php echo get_record(105,$lang,$en);?></button>		  
+			 		<button class="form-control btn btn-login sv_search_button" onclick="javascript:filter_funct();"><?php echo get_record(105,$lang,$en,$con);?></button>		  
 				
 				</div>
 			  
@@ -81,10 +81,10 @@ include('../header.php');
 			if(isset($_REQUEST['services']))
 	{
 		$reqst=$_REQUEST['services'];
-		$result=mysql_query("select * from sv_shop inner join sv_seller_services on sv_shop.id=sv_seller_services.shop_id where sv_seller_services.services_id='$reqst'");
+		$result=mysqli_query($con, "select * from sv_shop inner join sv_seller_services on sv_shop.id=sv_seller_services.shop_id where sv_seller_services.services_id='$reqst'");
 	
 			
-			while($row=mysql_fetch_array($result)) 
+			while($row=mysqli_fetch_array($result)) 
 				{					
 					$shop_id=$row['shop_id'];
 		?>	
@@ -126,7 +126,7 @@ include('../header.php');
 				?>
 				<h5><span class="icon_clock_alt" aria-hidden="true"></span> <?php echo $stime; ?> - <?php echo $etime; ?></h5>
 			
-				<a href="view_profile.php?id=<?php echo $shop_id; ?>"><button type="submit" name="" id="" class="booknow shop-booknow" value="Book Now"><?php echo get_record(106,$lang,$en);?></button></a>
+				<a href="view_profile.php?id=<?php echo $shop_id; ?>"><button type="submit" name="" id="" class="booknow shop-booknow" value="Book Now"><?php echo get_record(106,$lang,$en,$con);?></button></a>
 			<a href="view_profile.php?id=<?php echo $shop_id; ?>"><p>Book Now</p></a>
 			</div> 
 		 </div>
@@ -143,9 +143,9 @@ include('../header.php');
 	$services=""; 
 	
 	
-	$result=mysql_query("select * from sv_shop where status='approved'");
+	$result=mysqli_query($con, "select * from sv_shop where status='approved'");
 	
-	while($row=mysql_fetch_array($result)) 
+	while($row=mysqli_fetch_array($result)) 
 	{
 		$shop_id=$row['id'];
 		?>

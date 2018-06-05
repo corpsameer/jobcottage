@@ -2,8 +2,8 @@
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <?php 
-	$res=mysql_query("select * from sv_widget");
-	$row=mysql_num_rows($res);
+	$res=mysqli_query($con, "select * from sv_widget");
+	$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 			$id="";			
@@ -11,8 +11,8 @@
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);	
-			$admin_id=mysql_real_escape_string($fet['id']);
+			$fet=mysqli_fetch_array($res);	
+			$admin_id=mysqli_real_escape_string($con, $fet['id']);
 			$image=$fet['image'];
 		}	
 		$page = 'translate';
@@ -64,8 +64,8 @@ else
 				<div class="col-lg-12 col-md-12 col-sm-12" >
 					
 					<ul class="nav nav-tabs">
-					 <?php $activelang=mysql_query("select * from sv_language where lang_status='1' order by lang_id asc");
-					 while($rowlang=mysql_fetch_array($activelang)){?>
+					 <?php $activelang=mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc");
+					 while($rowlang=mysqli_fetch_array($activelang)){?>
         <li class="<?php if($rowlang['lang_code']==$_GET['section']){?>active<?php } ?>">
 		<?php if($rowlang['lang_code']!=$en){?><a href="translate.php?section=<?php echo $rowlang['lang_code'];?>"><?php } else { ?>
 		<a><?php } ?>
@@ -83,9 +83,9 @@ else
 	   <div class="tab-content">
 	   <div class="col-lg-6 col-md-6 col-sm-6 form-group">
 	   
-	   <?php $active_lang=mysql_query("select * from sv_translate where page_parent='0' and lang_code='$en' order by id asc");
+	   <?php $active_lang=mysqli_query($con, "select * from sv_translate where page_parent='0' and lang_code='$en' order by id asc");
 					
-					 while($row_lang=mysql_fetch_array($active_lang)){?>
+					 while($row_lang=mysqli_fetch_array($active_lang)){?>
 					
 	   					
 						<?php //echo $row_lang['id']; ?> <input type="text" id="eword[]" class="form-control" name="eword[]" value="<?php echo $row_lang['word']; ?>">						
@@ -96,7 +96,7 @@ else
 				
 					 <?php } ?>
 					 </div> 
-	    <?php $checkrec=mysql_num_rows(mysql_query("select * from sv_language where lang_status='1' order by lang_id asc"));
+	    <?php $checkrec=mysqli_num_rows(mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc"));
 		if($checkrec>1)
 		{
 		?>
@@ -104,11 +104,11 @@ else
 		
 		
 	   <div class="form-group col-lg-6 col-md-6 col-sm-6">
-							 <?php $activelang_des=mysql_query("select * from sv_translate where lang_code='$en' order by id asc");
-					 while($rowlang_des=mysql_fetch_array($activelang_des)){
+							 <?php $activelang_des=mysqli_query($con, "select * from sv_translate where lang_code='$en' order by id asc");
+					 while($rowlang_des=mysqli_fetch_array($activelang_des)){
 						 $langcode=$_GET['section'];
 						 $pageparent=$rowlang_des['id'];
-						 $viewsele=mysql_fetch_array(mysql_query("select * from sv_translate where lang_code='$langcode' and page_parent='$pageparent'"));
+						 $viewsele=mysqli_fetch_array(mysqli_query($con, "select * from sv_translate where lang_code='$langcode' and page_parent='$pageparent'"));
 						 
 						 ?>
 					

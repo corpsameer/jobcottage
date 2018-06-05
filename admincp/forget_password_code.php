@@ -2,11 +2,11 @@
 	include("../database/connection.php");	
 	@session_start();
 	require("../smtp/class.phpmailer.php");
-	$user = mysql_real_escape_string($_REQUEST['user']);
-	$result=mysql_query("select * from sv_admin_login where user_name = '$user'");
-	$row = mysql_fetch_array($result);
-	$email_id=mysql_real_escape_string($row['email_id']);
-	$rowcount = mysql_num_rows($result);
+	$user = mysqli_real_escape_string($con, $_REQUEST['user']);
+	$result=mysqli_query($con, "select * from sv_admin_login where user_name = '$user'");
+	$row = mysqli_fetch_array($result);
+	$email_id=mysqli_real_escape_string($con, $row['email_id']);
+	$rowcount = mysqli_num_rows($result);
 	//email id not match then.
 	if ($rowcount== 0)
 	{
@@ -27,13 +27,13 @@
 					//finally I take the first 8 characters from the $rnd_id 
 					$rnd_id = substr($rnd_id,0,$random_id_length);
 					$pas=md5($rnd_id);
-					if(mysql_query("update sv_admin_login set password='$pas' where user_name='$user'"))
+					if(mysqli_query($con, "update sv_admin_login set password='$pas' where user_name='$user'"))
 					{
 						if($email_id!='')
 						{
 								$subject = 'Password Details'; 
-								$user_name = mysql_real_escape_string($user); 
-								$randam_no = mysql_real_escape_string($rnd_id); 
+								$user_name = mysqli_real_escape_string($con, $user); 
+								$randam_no = mysqli_real_escape_string($con, $rnd_id); 
 								$message = '<!DOCTYPE HTML>'. 
 								'<head>'. 
 								'<meta http-equiv="content-type" content="text/html">'. 
@@ -57,9 +57,9 @@
 					'</div>'. 
 				'</body>'; 
 
-			$to      = mysql_real_escape_string($email_id);             
+			$to      = mysqli_real_escape_string($con, $email_id);             
 			$subject = 'Account Details - '.$site_name;  
-			$from    = mysql_real_escape_string($admin_email);                              
+			$from    = mysqli_real_escape_string($con, $admin_email);                              
 
 			$headers  = "From: " . $from . "\r\n"; 
 

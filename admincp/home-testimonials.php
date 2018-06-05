@@ -5,9 +5,9 @@
 <?php 
 if(isset($_REQUEST['tid']))
 	{		
-		$sid=mysql_real_escape_string($_REQUEST['tid']);
-		$res=mysql_query("select * from sv_testimonials where id='$sid'");
-		$row=mysql_num_rows($res);
+		$sid=mysqli_real_escape_string($con, $_REQUEST['tid']);
+		$res=mysqli_query($con, "select * from sv_testimonials where id='$sid'");
+		$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 		  $id="";
@@ -18,11 +18,11 @@ if(isset($_REQUEST['tid']))
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);
-			$id=mysql_real_escape_string($fet['id']);	
-			$testi_img=mysql_real_escape_string($fet['testi_img']);		
-			$desc=mysql_real_escape_string($fet['description']);				
-			$name=mysql_real_escape_string($fet['name']);				
+			$fet=mysqli_fetch_array($res);
+			$id=mysqli_real_escape_string($con, $fet['id']);	
+			$testi_img=mysqli_real_escape_string($con, $fet['testi_img']);		
+			$desc=mysqli_real_escape_string($con, $fet['description']);				
+			$name=mysqli_real_escape_string($con, $fet['name']);				
 			
 			$typ="update";	
 		}		
@@ -100,8 +100,8 @@ else
 				<div class="col-lg-12 col-md-12 col-sm-12">
 				
 				<ul class="nav nav-tabs">
-					 <?php $activelang=mysql_query("select * from sv_language where lang_status='1' order by lang_id asc");
-					 while($rowlang=mysql_fetch_array($activelang)){?>
+					 <?php $activelang=mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc");
+					 while($rowlang=mysqli_fetch_array($activelang)){?>
         <li class="<?php if($rowlang['lang_id']==1){?>active<?php } ?>"><a data-toggle="tab" href="#section<?php echo $rowlang['lang_id'];?>"><img src="<?php echo $site_url; ?>admincp/img/<?php echo $rowlang['lang_flag'];?>" style="max-width:24px; max-height:24px;"> <span style="position:relative;top:2px;"><?php echo $rowlang['lang_name'];?></span></a></li>
 					 <?php } ?>
 		
@@ -111,28 +111,28 @@ else
 	   
 	   
 	    <div class="tab-content">
-							 <?php $activelang_des=mysql_query("select * from sv_language where lang_status='1' order by lang_id asc");
-					 while($rowlang_des=mysql_fetch_array($activelang_des)){?>
+							 <?php $activelang_des=mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc");
+					 while($rowlang_des=mysqli_fetch_array($activelang_des)){?>
         <div id="section<?php echo $rowlang_des['lang_id'];?>" class="tab-pane fade in <?php if($rowlang_des['lang_id']==1){?>active<?php } ?>">
 		<?php 
 		if(isset($_REQUEST['tid'])){
 		$id=$_REQUEST['tid'];
 		}
 		
-		mysql_query("SET NAMES utf8");
-		mysql_query("SET CHARACTER SET utf8");
+		mysqli_query($con, "SET NAMES utf8");
+		mysqli_query($con, "SET CHARACTER SET utf8");
 		if($rowlang_des['lang_code']==$en)
 		{
-		$viewpage=mysql_query("select * from sv_testimonials where id='$id' and page_parent='0'");
+		$viewpage=mysqli_query($con, "select * from sv_testimonials where id='$id' and page_parent='0'");
 		
-		$onerow=mysql_fetch_array($viewpage);
+		$onerow=mysqli_fetch_array($viewpage);
 		}
 		else
 		{ 
 	        $langcode=$rowlang_des['lang_code'];
-			$viewpage=mysql_query("select * from sv_testimonials where lang_code='$langcode' and page_parent='$id'");
+			$viewpage=mysqli_query($con, "select * from sv_testimonials where lang_code='$langcode' and page_parent='$id'");
 			
-		    $onerow=mysql_fetch_array($viewpage);
+		    $onerow=mysqli_fetch_array($viewpage);
 		}
 		
 		?>
@@ -210,11 +210,11 @@ else
 									<tbody>
 									<?php
 										$sno=0;
-										$res=mysql_query("select * from sv_testimonials  where page_parent='0'");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_testimonials  where page_parent='0'");
+										while($row=mysqli_fetch_array($res))
 										{
 											$sno++;
-											$id=mysql_real_escape_string($row['id']);				
+											$id=mysqli_real_escape_string($con, $row['id']);				
 									?>  									
 										<tr>
 											<td><?php echo $sno; ?></td>	

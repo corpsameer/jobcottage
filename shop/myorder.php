@@ -3,15 +3,15 @@
 include("../database/connection.php");
 @session_start();
 if(isset($_SESSION['phone_no'])) { 
-	$phone_no=mysql_real_escape_string($_SESSION['phone_no']);			
-	$query=mysql_fetch_array(mysql_query("select * from sv_shop where phone_no='$phone_no'"));
+	$phone_no=mysqli_real_escape_string($con, $_SESSION['phone_no']);			
+	$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where phone_no='$phone_no'"));
 	$shop_id=$query['id'];
 ?>
 <?php 
 include('../header.php');
 ?>
 <div class="profile_main">
-<h1 class="text-center"><?php echo get_record(158,$lang,$en);?></h1>
+<h1 class="text-center"><?php echo get_record(158,$lang,$en,$con);?></h1>
 </div>
 <div class="min-space"></div>
 <div class="container">
@@ -21,7 +21,7 @@ include('../header.php');
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <?php echo get_record(158,$lang,$en);?>
+                            <?php echo get_record(158,$lang,$en,$con);?>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
@@ -43,24 +43,24 @@ include('../header.php');
 									<tbody>
 									<?php		
 									$sno=0;
-									$res=mysql_query("select * from sv_booking where shop_id='$shop_id' ORDER BY id DESC");
-									while($row=mysql_fetch_array($res))
+									$res=mysqli_query($con, "select * from sv_booking where shop_id='$shop_id' ORDER BY id DESC");
+									while($row=mysqli_fetch_array($res))
 									{
 										$sno++;
-										$shop_id=mysql_real_escape_string($row['shop_id']);
-										$query=mysql_fetch_array(mysql_query("select * from sv_shop where id='$shop_id'"));
+										$shop_id=mysqli_real_escape_string($con, $row['shop_id']);
+										$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$shop_id'"));
 										$shop_pno=$row['phone_no'];
-										$sv_user=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$shop_pno'"));
+										$sv_user=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$shop_pno'"));
 
-										$sid=mysql_real_escape_string($row['services_id']);
+										$sid=mysqli_real_escape_string($con, $row['services_id']);
 										$sel=explode("," , $sid);
 										$lev=count($sel);
 										$ser_name="";
 										for($i=0;$i<$lev;$i++)
 										{
 											$serid=$sel[$i];				
-											$res2=mysql_query("select * from sv_services where id='$serid'");
-											$fet2=mysql_fetch_array($res2);
+											$res2=mysqli_query($con, "select * from sv_services where id='$serid'");
+											$fet2=mysqli_fetch_array($res2);
 											$ser_name.='<div class="services_name">'.$fet2['services_name'].'<div>';				
 											$ser_name.=",";
 										}	

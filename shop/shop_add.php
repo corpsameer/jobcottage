@@ -4,29 +4,29 @@ include('../database/connection.php');
 	require("../smtp/class.phpmailer.php");
 
 @session_start();
-	$phone_no=mysql_real_escape_string($_SESSION['phone_no']);			
+	$phone_no=mysqli_real_escape_string($con, $_SESSION['phone_no']);			
 
-$shop_name=mysql_real_escape_string($_POST['shop_name']);
-$address=mysql_real_escape_string($_POST['shop_address']);
-$city=mysql_real_escape_string($_POST['city']);
-$pin_code=mysql_real_escape_string($_POST['pin_code']);
-$country=mysql_real_escape_string($_POST['country']);
-$state=mysql_real_escape_string($_POST['state']);
-$shop_phone_no=mysql_real_escape_string($_POST['shop_phone_no']);
-$desc=mysql_real_escape_string($_POST['shop_desc']);
-//$gender=mysql_real_escape_string($_POST['gender']);
-//$shop_date=mysql_real_escape_string($_POST['shop_date']);
-$start_time=mysql_real_escape_string($_POST['start_time']);
-$end_time=mysql_real_escape_string($_POST['end_time']);
+$shop_name=mysqli_real_escape_string($con, $_POST['shop_name']);
+$address=mysqli_real_escape_string($con, $_POST['shop_address']);
+$city=mysqli_real_escape_string($con, $_POST['city']);
+$pin_code=mysqli_real_escape_string($con, $_POST['pin_code']);
+$country=mysqli_real_escape_string($con, $_POST['country']);
+$state=mysqli_real_escape_string($con, $_POST['state']);
+$shop_phone_no=mysqli_real_escape_string($con, $_POST['shop_phone_no']);
+$desc=mysqli_real_escape_string($con, $_POST['shop_desc']);
+//$gender=mysqli_real_escape_string($con, $_POST['gender']);
+//$shop_date=mysqli_real_escape_string($con, $_POST['shop_date']);
+$start_time=mysqli_real_escape_string($con, $_POST['start_time']);
+$end_time=mysqli_real_escape_string($con, $_POST['end_time']);
 
 $ids = implode(",",$_POST["check_list"]);
 
-$opening_days=mysql_real_escape_string($_POST['opening_days']);
-$booking_per_hour=mysql_real_escape_string($_POST['booking_per_hour']);
-$res=mysql_query("select * from sv_shop where phone_no='$phone_no'");
-$row=mysql_num_rows($res);
-$fet=mysql_fetch_array($res);
-$id=mysql_real_escape_string($fet['id']);
+$opening_days=mysqli_real_escape_string($con, $_POST['opening_days']);
+$booking_per_hour=mysqli_real_escape_string($con, $_POST['booking_per_hour']);
+$res=mysqli_query($con, "select * from sv_shop where phone_no='$phone_no'");
+$row=mysqli_num_rows($res);
+$fet=mysqli_fetch_array($res);
+$id=mysqli_real_escape_string($con, $fet['id']);
 
 $old_file="shop-img/".$fet['cover_photo'];
 $old_file1="shop-img/".$fet['profile_photo'];
@@ -82,8 +82,8 @@ if($flag1=="0" && $flag2=="0")
 	}
 	else
 	{
-		$old_file=mysql_real_escape_string($fet['cover_photo']);
-		$file_name=mysql_real_escape_string($old_file);
+		$old_file=mysqli_real_escape_string($con, $fet['cover_photo']);
+		$file_name=mysqli_real_escape_string($con, $old_file);
 	}		
 	if($file_name1!="")
 	{
@@ -98,16 +98,16 @@ if($flag1=="0" && $flag2=="0")
 	}
 	else
 	{
-		$old_file1=mysql_real_escape_string($fet['profile_photo']);
-		$file_name1=mysql_real_escape_string($old_file1);
+		$old_file1=mysqli_real_escape_string($con, $fet['profile_photo']);
+		$file_name1=mysqli_real_escape_string($con, $old_file1);
 	}		
 	
 	if($row=="0")		
 	{			
-		if(mysql_query("insert into sv_shop(shop_name,address,city,pin_code,country,state,shop_phone_no,description,shop_date,start_time,end_time,cover_photo,profile_photo,phone_no,featured,status,admin_email_status,booking_opening_days,booking_per_hour)values('$shop_name','$address','$city','$pin_code','$country','$state','$shop_phone_no','$desc','$ids','$start_time','$end_time','$file_name','$file_name1','$phone_no','no','unapproved','0','$opening_days','$booking_per_hour')"))
+		if(mysqli_query($con, "insert into sv_shop(shop_name,address,city,pin_code,country,state,shop_phone_no,description,shop_date,start_time,end_time,cover_photo,profile_photo,phone_no,featured,status,admin_email_status,booking_opening_days,booking_per_hour)values('$shop_name','$address','$city','$pin_code','$country','$state','$shop_phone_no','$desc','$ids','$start_time','$end_time','$file_name','$file_name1','$phone_no','no','unapproved','0','$opening_days','$booking_per_hour')"))
 		{
 			$subject = 'Shop Created Successfully'; 
-			$shop = mysql_fetch_array(mysql_query("select * from sv_shop where phone_no='$phone_no' order by id DESC limit 1"));
+			$shop = mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where phone_no='$phone_no' order by id DESC limit 1"));
 			$shop_id=$shop['id'];
 									
 			if($shop_['start_time']>12)
@@ -132,9 +132,9 @@ if($flag1=="0" && $flag2=="0")
 			$sel=explode(",",$sid);
 			$lev=count($sel);
 				
-			$cover_pic= mysql_real_escape_string($shop['cover_photo']);
+			$cover_pic= mysqli_real_escape_string($con, $shop['cover_photo']);
 			$cover_photo=$site_url. "shop/shop-img/$cover_pic"; 
-			$gallery_pic= mysql_real_escape_string($shop['gallery']);
+			$gallery_pic= mysqli_real_escape_string($con, $shop['gallery']);
 			$gallery=$site_url. "shop/shop-img/$gallery_pic"; 
 			$message = '<!DOCTYPE HTML>'. 
 			'<head>'. 
@@ -170,10 +170,10 @@ if($flag1=="0" && $flag2=="0")
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$user_det = mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no' order by id DESC limit 1"));
-$to      = mysql_real_escape_string($user_det['email']);            
+$user_det = mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no' order by id DESC limit 1"));
+$to      = mysqli_real_escape_string($con, $user_det['email']);            
 $subject = 'Shop Details - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($con, $admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -242,9 +242,9 @@ if($mail_option=="smtp")
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($admin_email);            
+$to      = mysqli_real_escape_string($con, $admin_email);            
 $subject = 'New Shop Created - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($con, $admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -285,7 +285,7 @@ if($mail_option=="smtp")
 	}
 	else
 	{
-		if(mysql_query("update sv_shop set shop_name='$shop_name',address='$address',city='$city',pin_code='$pin_code',country='$country',state='$state',shop_phone_no='$shop_phone_no',description='$desc',shop_date='$ids',start_time='$start_time',end_time='$end_time',cover_photo='$file_name',profile_photo='$file_name1',phone_no='$phone_no',admin_email_status='0',booking_opening_days='$opening_days',booking_per_hour='$booking_per_hour' where id='$id'")) 
+		if(mysqli_query($con, "update sv_shop set shop_name='$shop_name',address='$address',city='$city',pin_code='$pin_code',country='$country',state='$state',shop_phone_no='$shop_phone_no',description='$desc',shop_date='$ids',start_time='$start_time',end_time='$end_time',cover_photo='$file_name',profile_photo='$file_name1',phone_no='$phone_no',admin_email_status='0',booking_opening_days='$opening_days',booking_per_hour='$booking_per_hour' where id='$id'")) 
 		{
 			$msg="Updated";
 			header("Location:shop.php?msg=".$msg);

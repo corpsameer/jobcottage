@@ -34,7 +34,7 @@ $msg="";
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-12">
-								<a href="#" class="" id="login-form-link"><h3><?php echo get_record(168,$lang,$en);?></h3> </a>
+								<a href="#" class="" id="login-form-link"><h3><?php echo get_record(168,$lang,$en,$con);?></h3> </a>
 							</div>
 						</div>
 						<hr>
@@ -42,19 +42,19 @@ $msg="";
 											
 					<div class="panel-body">
 					<div class="row">
-					<p class="text-center forgot"><?php echo get_record(169,$lang,$en);?></p>	
+					<p class="text-center forgot"><?php echo get_record(169,$lang,$en,$con);?></p>	
 					</div>
 						<div class="row">
 							<div class="col-lg-12">
 								<form id="login-form" action="javascript:forgot();" method="post" role="form">
 									<div class="form-group">
-									<label><?php echo get_record(93,$lang,$en);?><span class="star">*</span></label>
+									<label><?php echo get_record(93,$lang,$en,$con);?><span class="star">*</span></label>
 										<input type="text" name="pno" id="pno" tabindex="1" class="form-control"  required="" value="">
 									</div>																	
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="" id="" class="form-control btn btn-login" value="<?php echo get_record(170,$lang,$en);?>">
+												<input type="submit" name="" id="" class="form-control btn btn-login" value="<?php echo get_record(170,$lang,$en,$con);?>">
 											</div>
 										</div>
 									</div>									

@@ -5,9 +5,9 @@ if(!isset($_SESSION['user']))
 	header("Location:index.php");
 else
 {		
-	$user_name=mysql_real_escape_string($_SESSION['user']);			
-	$res=mysql_fetch_array(mysql_query("select * from sv_admin_login where user_name='$user_name'"));
-	$uname=mysql_real_escape_string($res['user_name']);
+	$user_name=mysqli_real_escape_string($con, $_SESSION['user']);			
+	$res=mysqli_fetch_array(mysqli_query($con, "select * from sv_admin_login where user_name='$user_name'"));
+	$uname=mysqli_real_escape_string($con, $res['user_name']);
 }	
 $page = 'dashboard';
 ?>
@@ -38,17 +38,17 @@ $page = 'dashboard';
                 <!-- /. ROW  -->
 				<?php 
 				$curr_date=date("Y-m-d");
-				$query=mysql_query("select * from sv_users where curr_date='$curr_date'");
-				$num=mysql_num_rows($query);
+				$query=mysqli_query($con, "select * from sv_users where curr_date='$curr_date'");
+				$num=mysqli_num_rows($query);
 				
-				$query2=mysql_query("select * from sv_users");
-				$num2=mysql_num_rows($query2);
+				$query2=mysqli_query($con, "select * from sv_users");
+				$num2=mysqli_num_rows($query2);
 				
-				$seller_query=mysql_query("select * from sv_users where curr_date='$curr_date' and user_type='seller'");
-				$seller_count=mysql_num_rows($seller_query);
+				$seller_query=mysqli_query($con, "select * from sv_users where curr_date='$curr_date' and user_type='seller'");
+				$seller_count=mysqli_num_rows($seller_query);
 				
-				$booking_query=mysql_query("select * from sv_booking where curr_date='$curr_date'");
-				$booking_count=mysql_num_rows($booking_query);
+				$booking_query=mysqli_query($con, "select * from sv_booking where curr_date='$curr_date'");
+				$booking_count=mysqli_num_rows($booking_query);
 				
 				?>
 
@@ -118,13 +118,13 @@ $last_date5=date("Y-m-d", strtotime("-5 days"));
 $last_date6=date("Y-m-d", strtotime("-6 days"));
 
 
-$date1=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$curr_date'"));
-$date2=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$last_date1'"));
-$date3=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$last_date2'"));
-$date4=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$last_date3'"));
-$date5=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$last_date4'"));
-$date6=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$last_date5'"));
-$date7=mysql_num_rows(mysql_query("select * from sv_booking where curr_date='$last_date6'"));
+$date1=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$curr_date'"));
+$date2=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$last_date1'"));
+$date3=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$last_date2'"));
+$date4=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$last_date3'"));
+$date5=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$last_date4'"));
+$date6=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$last_date5'"));
+$date7=mysqli_num_rows(mysqli_query($con, "select * from sv_booking where curr_date='$last_date6'"));
 
 $javas="{ label: '$last_date6', y: $date7 },";
 $javas.="{ label: '$last_date5', y: $date6 },";

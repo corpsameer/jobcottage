@@ -3,16 +3,16 @@
 include("../database/connection.php");
 @session_start();
 if(isset($_SESSION['phone_no'])) { 
-	$phone_no=mysql_real_escape_string($_SESSION['phone_no']);			
-	$query=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no'"));
-	$shop_query=mysql_fetch_array(mysql_query("select * from sv_shop where phone_no='$phone_no'"));
+	$phone_no=mysqli_real_escape_string($con, $_SESSION['phone_no']);			
+	$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no'"));
+	$shop_query=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where phone_no='$phone_no'"));
 $shop_id=$shop_query['id'];
 ?>
 <?php 
 include('../header.php');
 ?>
 <div class="profile_main">
-<h1 class="text-center"><?php echo get_record(109,$lang,$en);?></h1>
+<h1 class="text-center"><?php echo get_record(109,$lang,$en,$con);?></h1>
 </div>
 
 <div class="min-space"></div>
@@ -55,9 +55,9 @@ else
 <?php 
 		if(isset($_REQUEST['gid']))
 		{		
-		$gid=mysql_real_escape_string($_REQUEST['gid']);
-		$res=mysql_query("select * from sv_shop_gallery where id='$gid'");
-		$row=mysql_num_rows($res);
+		$gid=mysqli_real_escape_string($con, $_REQUEST['gid']);
+		$res=mysqli_query($con, "select * from sv_shop_gallery where id='$gid'");
+		$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 		  $gallery_id="";
@@ -66,10 +66,10 @@ else
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);
-			$gallery_id=mysql_real_escape_string($fet['id']);	
-			$image=mysql_real_escape_string($fet['image']);	
-			$shop_id=mysql_real_escape_string($fet['shop_id']);
+			$fet=mysqli_fetch_array($res);
+			$gallery_id=mysqli_real_escape_string($con, $fet['id']);	
+			$image=mysqli_real_escape_string($con, $fet['image']);	
+			$shop_id=mysqli_real_escape_string($con, $fet['shop_id']);
 			$typ="update";	
 		}		
 	}
@@ -88,13 +88,13 @@ else
 		<input type="hidden" id="typ" name="typ" value="<?php echo $typ;?>">
 			<input type="hidden" id="id" name="id" value="<?php echo $gallery_id;?>">
 			<?php
-			$sql=mysql_fetch_array(mysql_query("select * from sv_shop where phone_no='$phone_no'"));
+			$sql=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where phone_no='$phone_no'"));
 			$sid=$sql['id']; ?>
 			<input type="hidden" id="shopid" name="shopid" value="<?php echo $sid;?>">
 
 			
 			<div class="col-md-12 col-md-12 col-sm-12 form-group">					
-				<label><?php echo get_record(159,$lang,$en);?></label>							
+				<label><?php echo get_record(159,$lang,$en,$con);?></label>							
 				<input type="file" id="gallery" class="form-control" name="gallery" value="">	
 				<?php if(isset($_REQUEST['gid'])) { if($image=="") { } else { ?>						
 						  <img src="<?php echo $site_url; ?>shop/shop-img/<?php echo $image;?>" class="col-md-6">
@@ -104,9 +104,9 @@ else
 			<div class="col-md-2 col-md-2 col-sm-2 form-group">		
 			<label></label>
 			   <?php if($demo_mode=="off") { ?>
-				<button type="submit" class="form-control btn btn-register"><?php echo get_record(156,$lang,$en);?></button>
+				<button type="submit" class="form-control btn btn-register"><?php echo get_record(156,$lang,$en,$con);?></button>
 			   <?php } else { ?>
-			   <button type="button" class="form-control btn btn-login" disabled="disabled"><?php echo get_record(156,$lang,$en);?></button> <span class="demomode">[Demo Mode Enabled]</span>
+			   <button type="button" class="form-control btn btn-login" disabled="disabled"><?php echo get_record(156,$lang,$en,$con);?></button> <span class="demomode">[Demo Mode Enabled]</span>
 			   <?php } ?>
 			</div>
 			
@@ -119,28 +119,28 @@ else
                     <!-- Advanced Tables -->
                     <div class="panel panel-default" style="clear:both;">
                         <div class="panel-heading">
-                           <?php echo get_record(109,$lang,$en);?>
+                           <?php echo get_record(109,$lang,$en,$con);?>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><?php echo get_record(200,$lang,$en);?></th>
-											<th><?php echo get_record(201,$lang,$en);?></th>
-											<th><?php echo get_record(180,$lang,$en);?></th>
-											<th><?php echo get_record(198,$lang,$en);?></th>	
+                                            <th><?php echo get_record(200,$lang,$en,$con);?></th>
+											<th><?php echo get_record(201,$lang,$en,$con);?></th>
+											<th><?php echo get_record(180,$lang,$en,$con);?></th>
+											<th><?php echo get_record(198,$lang,$en,$con);?></th>	
                                         </tr>
                                     </thead>
 									<tbody>
 									<?php
 										$sno=0;
-										$res=mysql_query("select * from sv_shop_gallery where shop_id='$shop_id'");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_shop_gallery where shop_id='$shop_id'");
+										while($row=mysqli_fetch_array($res))
 										{
 											$sno++;
-											$id=mysql_real_escape_string($row['id']);	
-											$img=mysql_real_escape_string($row['image']);
+											$id=mysqli_real_escape_string($con, $row['id']);	
+											$img=mysqli_real_escape_string($con, $row['image']);
 			
 									?>  									
 										<tr>

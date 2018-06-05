@@ -3,22 +3,22 @@
 include("../database/connection.php");
 @session_start();
 if(isset($_SESSION['phone_no'])) { 
-	$phone_no=mysql_real_escape_string($_SESSION['phone_no']);			
-	$query=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no'"));
+	$phone_no=mysqli_real_escape_string($con, $_SESSION['phone_no']);			
+	$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no'"));
 ?>
 <?php 
 include('../header.php');
 ?>
 <div class="profile_main">
-<h1 class="text-center"><?php echo get_record(46,$lang,$en);?></h1>
+<h1 class="text-center"><?php echo get_record(46,$lang,$en,$con);?></h1>
 </div>
 
 <?php 
 if(isset($_REQUEST['sid']))
 	{		
-		$sid=mysql_real_escape_string($_REQUEST['sid']);
-		$res=mysql_query("select * from sv_seller_services where id='$sid'");
-		$row=mysql_num_rows($res);
+		$sid=mysqli_real_escape_string($con, $_REQUEST['sid']);
+		$res=mysqli_query($con, "select * from sv_seller_services where id='$sid'");
+		$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 		  $id="";
@@ -29,11 +29,11 @@ if(isset($_REQUEST['sid']))
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);
-			$id=mysql_real_escape_string($fet['id']);	
-			$services_id=mysql_real_escape_string($fet['services_id']);	
-			$price=mysql_real_escape_string($fet['price']);				
-			$time=mysql_real_escape_string($fet['time']);				
+			$fet=mysqli_fetch_array($res);
+			$id=mysqli_real_escape_string($con, $fet['id']);	
+			$services_id=mysqli_real_escape_string($con, $fet['services_id']);	
+			$price=mysqli_real_escape_string($con, $fet['price']);				
+			$time=mysqli_real_escape_string($con, $fet['time']);				
 			$typ="update";	
 		}		
 	}
@@ -76,12 +76,12 @@ else
 <div class="container">
    <div class="col-md-12">
 	<div class="form-group col-md-4" >
-		<label><?php echo get_record(183,$lang,$en);?><span class="star">*</span></label>
+		<label><?php echo get_record(183,$lang,$en,$con);?><span class="star">*</span></label>
 		<select class="form-control" id="services_name" name="services_name" required>
 			<option value="">Select Services</option>
 			<?php 
-			$query=mysql_query("select * from sv_services where lang_code='$lang'");
-			while($res=mysql_fetch_array($query))
+			$query=mysqli_query($con, "select * from sv_services where lang_code='$lang'");
+			while($res=mysqli_fetch_array($query))
 			{
 				if($lang==$en)
 						{
@@ -97,15 +97,15 @@ else
 		</select>		
 	</div>
 	<div class="form-group col-md-1">	
-		<label><?php echo get_record(184,$lang,$en);?></label>
+		<label><?php echo get_record(184,$lang,$en,$con);?></label>
 		<input type="text"  name="" id="" class="form-control" disabled="disabled" value="<?php echo $currency_mode; ?>">
 	</div>
 	<div class="form-group col-md-3">		
-		<label><?php echo get_record(196,$lang,$en);?><span class="star">*</span></label>
+		<label><?php echo get_record(196,$lang,$en,$con);?><span class="star">*</span></label>
 		<input type="number"  name="price" required id="price" class="form-control" value="<?php echo $price; ?>">
 	</div>
 	<div class="form-group col-md-4" id="shop_address" >
-		<label><?php echo get_record(197,$lang,$en);?></label>
+		<label><?php echo get_record(197,$lang,$en,$con);?></label>
 		<input type="number" name="time" id="time" class="form-control" value="<?php echo $time; ?>">
 	</div>
 	
@@ -114,9 +114,9 @@ else
 		<div class="row">
 			<div class="col-sm-2">
 			 <?php if($demo_mode=="off") { ?>
-				<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="<?php echo get_record(137,$lang,$en);?>">
+				<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="<?php echo get_record(137,$lang,$en,$con);?>">
 			 <?php } else { ?>
-			 <input type="" disabled="disabled" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(137,$lang,$en);?>"><span class="demomode">[Demo Mode Enabled]</span>
+			 <input type="" disabled="disabled" tabindex="4" class="form-control btn btn-login" value="<?php echo get_record(137,$lang,$en,$con);?>"><span class="demomode">[Demo Mode Enabled]</span>
 			 <?php } ?>
 			</div>
 		</div>
@@ -133,30 +133,30 @@ else
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <?php echo get_record(46,$lang,$en);?>
+                            <?php echo get_record(46,$lang,$en,$con);?>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th><?php echo get_record(200,$lang,$en);?></th>
-											<th><?php echo get_record(46,$lang,$en);?></th>
-											<th><?php echo get_record(196,$lang,$en);?></th>
-											<th><?php echo get_record(199,$lang,$en);?></th>
-											<th><?php echo get_record(180,$lang,$en);?></th>
-											<th><?php echo get_record(198,$lang,$en);?></th>	
+                                            <th><?php echo get_record(200,$lang,$en,$con);?></th>
+											<th><?php echo get_record(46,$lang,$en,$con);?></th>
+											<th><?php echo get_record(196,$lang,$en,$con);?></th>
+											<th><?php echo get_record(199,$lang,$en,$con);?></th>
+											<th><?php echo get_record(180,$lang,$en,$con);?></th>
+											<th><?php echo get_record(198,$lang,$en,$con);?></th>	
                                         </tr>
                                     </thead>
 									<tbody>
 									<?php
 										$sno=0;
-										$res=mysql_query("select * from sv_seller_services where phone_no='$phone_no'");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_seller_services where phone_no='$phone_no'");
+										while($row=mysqli_fetch_array($res))
 										{
 											$sno++;
-											$id=mysql_real_escape_string($row['id']);
-											$sid=mysql_real_escape_string($row['services_id']);	
+											$id=mysqli_real_escape_string($con, $row['id']);
+											$sid=mysqli_real_escape_string($con, $row['services_id']);	
 											
 											if($lang==$en)
 											{
@@ -167,7 +167,7 @@ else
 												$ser_id="page_parent";
 											}
 											
-											$result=mysql_fetch_array(mysql_query("select * from sv_services where $ser_id='$sid' and lang_code='$lang'"));
+											$result=mysqli_fetch_array(mysqli_query($con, "select * from sv_services where $ser_id='$sid' and lang_code='$lang'"));
 											
 									?>  									
 										<tr>

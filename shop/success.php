@@ -1,7 +1,7 @@
 <?php
 include ('../database/connection.php');
  include("../header.php");
- $phone_no=mysql_real_escape_string($_SESSION['phone_no']);		
+ $phone_no=mysqli_real_escape_string($_SESSION['phone_no']);		
  $logo=$res['site_url'] . "admincp/img/$logo1"; 
 ?>
 <section class="teaser bg-top ">
@@ -18,21 +18,21 @@ $payment_gross = $_GET['amt'];
 $currency_code = $_GET['cc'];
 $payment_status = $_GET['st'];
 
-	mysql_query("update sv_booking set status='paid',currency='$currency_code' where id='$item_number'");
+	mysqli_query($con, "update sv_booking set status='paid',currency='$currency_code' where id='$item_number'");
 	
-		$fet=mysql_fetch_array(mysql_query("select * from sv_booking where phone_no='$phone_no' order by id DESC limit 1"));
+		$fet=mysqli_fetch_array(mysqli_query($con, "select * from sv_booking where phone_no='$phone_no' order by id DESC limit 1"));
 	$last_id=$fet['id'];
 	
 	$last_shop_id=$fet['shop_id'];
-		$fet1=mysql_fetch_array(mysql_query("select * from sv_shop where id='$last_shop_id'"));
+		$fet1=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$last_shop_id'"));
 		$pno=$fet1['phone_no'];
-		$fet2=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$pno'"));
+		$fet2=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$pno'"));
 		$seller_email=$fet2['email'];
 		
 		require("../smtp/class.phpmailer.php");
 		/*----------------------------user email--------------------------*/
 		 $subject = 'Payment Details'; 
-			$booking_query = mysql_fetch_array(mysql_query("select * from sv_booking where phone_no='$phone_no' order by id DESC limit 1"));
+			$booking_query = mysqli_fetch_array(mysqli_query($con, "select * from sv_booking where phone_no='$phone_no' order by id DESC limit 1"));
 			$sid=$booking_query['services_id'];
 			$booking_time=$booking_query['booking_time'];
 			if($booking_time>12)
@@ -44,7 +44,7 @@ $payment_status = $_GET['st'];
 			{
 				$final_time=$booking_time."AM";
 			}
-			$query2=mysql_fetch_array(mysql_query("select * from sv_services where id='$sid'"));
+			$query2=mysqli_fetch_array(mysqli_query($con, "select * from sv_services where id='$sid'"));
 			 $sel=explode("," , $sid);
 			$lev=count($sel);
 			$ser_name="";
@@ -64,8 +64,8 @@ $payment_status = $_GET['st'];
 							}
 
 				
-				$res1=mysql_query("select * from sv_services where $ser_id='$id'");
-				$fet1=mysql_fetch_array($res1);
+				$res1=mysqli_query($con, "select * from sv_services where $ser_id='$id'");
+				$fet1=mysqli_fetch_array($res1);
 				$ser_name.=$fet1['services_name'].'<br>';
 				$ser_name.=",";
 				$ser_name=trim($ser_name,",");
@@ -98,10 +98,10 @@ $payment_status = $_GET['st'];
 		'</div>'. 
 		'</body>'; 
 		
-$user_det = mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no' order by id DESC limit 1"));
-$to      = mysql_real_escape_string($user_det['email']);            
+$user_det = mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no' order by id DESC limit 1"));
+$to      = mysqli_real_escape_string($user_det['email']);            
 $subject = 'Booking Details - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -164,9 +164,9 @@ if($mail_option=="smtp")
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($admin_email);            
+$to      = mysqli_real_escape_string($admin_email);            
 $subject = 'New Payment Received  - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -229,9 +229,9 @@ if($mail_option=="smtp")
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($seller_email);            
+$to      = mysqli_real_escape_string($seller_email);            
 $subject = 'New Payment Received - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 

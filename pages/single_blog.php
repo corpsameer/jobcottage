@@ -17,9 +17,9 @@ if (isset($_REQUEST['id']))
 		{
 			$ser_id="page_parent";
 		}
-	$sql=mysql_query("select * from sv_blog where lang_code='$lang' and ".$ser_id."=".$id);
+	$sql=mysqli_query($con, "select * from sv_blog where lang_code='$lang' and ".$ser_id."=".$id);
 	
-	while($result=mysql_fetch_array($sql))
+	while($result=mysqli_fetch_array($sql))
 	{
  ?>
 <div class="col-md-12 blog">

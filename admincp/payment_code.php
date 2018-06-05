@@ -1,26 +1,26 @@
 <?php
 include('../database/connection.php');
-$type=mysql_real_escape_string($_REQUEST['action']);
+$type=mysqli_real_escape_string($con, $_REQUEST['action']);
 require("../smtp/class.phpmailer.php");
  
 if($type=='update')
 {
-	$hid=mysql_real_escape_string($_REQUEST['hid']);
-	mysql_query("update sv_withdraw_request set status='completed' where id='$hid'");
+	$hid=mysqli_real_escape_string($con, $_REQUEST['hid']);
+	mysqli_query($con, "update sv_withdraw_request set status='completed' where id='$hid'");
 	
-	$sv_bal= mysql_fetch_array(mysql_query("select * from sv_withdraw_request where id='$hid'"));
+	$sv_bal= mysqli_fetch_array(mysqli_query($con, "select * from sv_withdraw_request where id='$hid'"));
 	$final_bal=$sv_bal['shop_balance']-$sv_bal['withdraw_amt'];	
 	
-	mysql_query("update sv_withdraw_request set shop_balance='$final_bal' where id='$hid'");
+	mysqli_query($con, "update sv_withdraw_request set shop_balance='$final_bal' where id='$hid'");
 	
 	
 	
 		$subject = 'Withdrawal Request Approved'; 
-			$sv_withdraw = mysql_fetch_array(mysql_query("select * from sv_withdraw_request where id='$hid'"));
+			$sv_withdraw = mysqli_fetch_array(mysqli_query($con, "select * from sv_withdraw_request where id='$hid'"));
 			$shop_id=$sv_withdraw['shop_id'];
-			$sv_shop = mysql_fetch_array(mysql_query("select * from sv_shop where id='$shop_id'"));
+			$sv_shop = mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$shop_id'"));
 			$pno=$sv_shop['phone_no'];			
-			$sv_email= mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$pno' "));
+			$sv_email= mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$pno' "));
 			$vendor_email=$sv_email['email'];
 			
 		$subject = 'Withdrawal Request Approved'; 		
@@ -53,9 +53,9 @@ if($type=='update')
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($vendor_email);            
+$to      = mysqli_real_escape_string($vendor_email);            
 $subject = 'Withdrawal Request Approved- '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 

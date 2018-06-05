@@ -5,9 +5,9 @@
 <?php 
 if(isset($_REQUEST['sid']))
 	{		
-		$sid=mysql_real_escape_string($_REQUEST['sid']);
-		$res=mysql_query("select * from sv_slider where id='$sid'");
-		$row=mysql_num_rows($res);
+		$sid=mysqli_real_escape_string($con, $_REQUEST['sid']);
+		$res=mysqli_query($con, "select * from sv_slider where id='$sid'");
+		$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 		  $id="";
@@ -16,9 +16,9 @@ if(isset($_REQUEST['sid']))
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);
-			$id=mysql_real_escape_string($fet['id']);	
-			$slider_img=mysql_real_escape_string($fet['slider_img']);				
+			$fet=mysqli_fetch_array($res);
+			$id=mysqli_real_escape_string($con, $fet['id']);	
+			$slider_img=mysqli_real_escape_string($con, $fet['slider_img']);				
 			$typ="update";	
 		}		
 	}
@@ -140,11 +140,11 @@ else
 									<tbody>
 									<?php
 										$sno=0;
-										$res=mysql_query("select * from sv_slider");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_slider");
+										while($row=mysqli_fetch_array($res))
 										{
 											$sno++;
-											$id=mysql_real_escape_string($row['id']);				
+											$id=mysqli_real_escape_string($con, $row['id']);				
 									?>  									
 										<tr>
 											<td><?php echo $sno; ?></td>

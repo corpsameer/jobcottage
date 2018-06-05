@@ -4,10 +4,10 @@ include('../database/connection.php');
 @session_start();
 require("../smtp/class.phpmailer.php");
 $user_name=$_SESSION['phone_no'];	
-$current_shop_id= mysql_fetch_array(mysql_query("select * from sv_shop where phone_no='$user_name' "));
+$current_shop_id= mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where phone_no='$user_name' "));
 $sv_current_shop_id=$current_shop_id['id'];
 
-$type=mysql_real_escape_string($_REQUEST['action']);
+$type=mysqli_real_escape_string($con, $_REQUEST['action']);
 if($type=='add')
 {
 	$shop_balance=$_REQUEST['shop_balance'];
@@ -24,15 +24,15 @@ if($type=='add')
 	if($admin_withdraw_amt<=$withdraw_amt && $shop_balance>=$withdraw_amt)
 	{
 				
-		mysql_query("insert into sv_withdraw_request(shop_balance,withdraw_amt,total_bal,withdraw_mode,paypal_id,payu_id,stripe_id,
+		mysqli_query($con, "insert into sv_withdraw_request(shop_balance,withdraw_amt,total_bal,withdraw_mode,paypal_id,payu_id,stripe_id,
 		bank_acc_no,bank_info,ifsc_code,shop_id,status)values('$shop_balance','$withdraw_amt','$total_bal','$withdraw_mode',
 		'$paypal_id','$payu_id','$stripe_id','$bank_acc_no','$bank_name','$ifsc_code','$shop_id','pending')");
 		echo "Inserted";
 						
 			$subject = 'Withdrawal Request'; 
-			$sv_withdraw = mysql_fetch_array(mysql_query("select * from sv_withdraw_request where shop_id='$sv_current_shop_id' order by id DESC limit 1"));
+			$sv_withdraw = mysqli_fetch_array(mysqli_query($con, "select * from sv_withdraw_request where shop_id='$sv_current_shop_id' order by id DESC limit 1"));
 			$shop_id=$sv_withdraw['shop_id'];
-			$sv_shop = mysql_fetch_array(mysql_query("select * from sv_shop where id='$shop_id'"));
+			$sv_shop = mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$shop_id'"));
 			
 		$subject = 'Withdrawal Request'; 		
 			 
@@ -66,9 +66,9 @@ if($type=='add')
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($admin_email);            
+$to      = mysqli_real_escape_string($admin_email);            
 $subject = 'New Withdrawal Request- '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 

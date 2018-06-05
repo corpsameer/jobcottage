@@ -3,8 +3,8 @@
 <?php include("../database/connection.php"); ?>
 
 <?php 
-	$res=mysql_query("select * from sv_social_login");
-	$row=mysql_num_rows($res);
+	$res=mysqli_query($con, "select * from sv_social_login");
+	$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 			$id="";
@@ -16,14 +16,14 @@
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);	
-			$id=mysql_real_escape_string($fet['id']);
+			$fet=mysqli_fetch_array($res);	
+			$id=mysqli_real_escape_string($con, $fet['id']);
 					
-			$facebook=mysql_real_escape_string($fet['facebook']);
-			$twitter=mysql_real_escape_string($fet['twitter']);
-			$pinterest=mysql_real_escape_string($fet['pinterest']);
-			$linkedin=mysql_real_escape_string($fet['linkedin']);
-			$google=mysql_real_escape_string($fet['google_plus']);
+			$facebook=mysqli_real_escape_string($con, $fet['facebook']);
+			$twitter=mysqli_real_escape_string($con, $fet['twitter']);
+			$pinterest=mysqli_real_escape_string($con, $fet['pinterest']);
+			$linkedin=mysqli_real_escape_string($con, $fet['linkedin']);
+			$google=mysqli_real_escape_string($con, $fet['google_plus']);
 		}	
 		$page = 'social-login';
 ?>

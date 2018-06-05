@@ -1,0 +1,1 @@
+1) Changes to make code compatible with latest PHP MYSQLi functions.

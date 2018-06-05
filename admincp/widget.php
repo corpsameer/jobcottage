@@ -2,8 +2,8 @@
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <?php 
-	$res=mysql_query("select * from sv_widget");
-	$row=mysql_num_rows($res);
+	$res=mysqli_query($con, "select * from sv_widget");
+	$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 			$id="";			
@@ -11,8 +11,8 @@
 		}
 		else
 		{			
-			$fet=mysql_fetch_array($res);	
-			$admin_id=mysql_real_escape_string($fet['id']);
+			$fet=mysqli_fetch_array($res);	
+			$admin_id=mysqli_real_escape_string($con, $fet['id']);
 			$image=$fet['image'];
 		}	
 		$page = 'widget';

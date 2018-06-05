@@ -53,11 +53,11 @@
 						<a href="language.php"><i class="fa fa-language" aria-hidden="true"></i>Language</a>
 					</li> 
                    <?php
-				   $checkrec=mysql_num_rows(mysql_query("select * from sv_language where lang_status='1' order by lang_id asc"));
+				   $checkrec=mysqli_num_rows(mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc"));
 				   
 				   if($checkrec>1){
 				   
-                   $viewact=mysql_fetch_array(mysql_query("select * from sv_language where lang_status='1' order by lang_id asc limit 1,1"));			   
+                   $viewact=mysqli_fetch_array(mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc limit 1,1"));			   
 				   ?>
 				   <li class="menuitem <?php if($page=='translate'){echo 'active';}?>" >
 						<a href="translate.php?section=<?php echo $viewact['lang_code'];?>"><i class="fa fa-language" aria-hidden="true"></i>Translate</a>

@@ -5,18 +5,18 @@ include('../header.php');
 include("../database/connection.php");
 @session_start();
 if(isset($_SESSION['phone_no'])) { 
-	$phone_no=mysql_real_escape_string($_SESSION['phone_no']);			
-	$query=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no'"));
+	$phone_no=mysqli_real_escape_string($_SESSION['phone_no']);			
+	$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no'"));
 }
 if(isset($_REQUEST['id']))
 	{		
-		$id=mysql_real_escape_string($_REQUEST['id']);	
+		$id=mysqli_real_escape_string($con, $_REQUEST['id']);	
 	}
 	else
 	{$id="";}
 if(isset($_REQUEST['service_id']))
 	{		
-		$sv_service_id=mysql_real_escape_string($_REQUEST['service_id']);	
+		$sv_service_id=mysqli_real_escape_string($con, $_REQUEST['service_id']);	
 	}
 	else
 	{$service_id="";}
@@ -49,7 +49,7 @@ else
 ?>
 </div>
 <?php 
-$shop_query=mysql_fetch_array(mysql_query("select * from sv_shop where id='$id'"));
+$shop_query=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$id'"));
 $id=$shop_query['id'];
 $pno=$shop_query['phone_no'];
 ?>
@@ -84,11 +84,11 @@ if(isset($_REQUEST['book_info']) )
 	{
 ?>
 <div class="container payment-main">
-<h2><?php echo get_record(234,$lang,$en);?></h2>
+<h2><?php echo get_record(234,$lang,$en,$con);?></h2>
 	<div class="col-md-6">
 		<h4><?php echo $shop_query['shop_name']; ?></h4>
 		<?php 
-		$book_query=mysql_fetch_array(mysql_query("select * from sv_booking where status='pending' order by id DESC"));
+		$book_query=mysqli_fetch_array(mysqli_query($con, "select * from sv_booking where status='pending' order by id DESC"));
 		$sid=$book_query['services_id'];
 		 $booking_time=$book_query['booking_time'];
 		if($booking_time>12)
@@ -103,16 +103,16 @@ if(isset($_REQUEST['book_info']) )
 
 		?>
 				
-			<p><i class="fa fa-calendar-o" aria-hidden="true"></i> <?php echo get_record(235,$lang,$en);?> - <?php echo $book_query['booking_date']; ?></p>
-			<p> <i class="fa fa-clock-o" aria-hidden="true"></i>  <?php echo get_record(236,$lang,$en);?> - <?php echo $final_time; ?></p>
+			<p><i class="fa fa-calendar-o" aria-hidden="true"></i> <?php echo get_record(235,$lang,$en,$con);?> - <?php echo $book_query['booking_date']; ?></p>
+			<p> <i class="fa fa-clock-o" aria-hidden="true"></i>  <?php echo get_record(236,$lang,$en,$con);?> - <?php echo $final_time; ?></p>
 		
 	</div>
 	
 	<div class="col-md-6 service_style">
 		<?php 
-			//$service_query=mysql_fetch_array(mysql_query("select * from sv_services where id='$sid'"));
+			//$service_query=mysqli_fetch_array(mysqli_query($con, "select * from sv_services where id='$sid'"));
 			
-			$ser_id=mysql_real_escape_string($book_query['services_id']);
+			$ser_id=mysqli_real_escape_string($book_query['services_id']);
 			$sel=explode("," , $ser_id);
 			$lev=count($sel);
 			$ser_name="";
@@ -132,13 +132,13 @@ if(isset($_REQUEST['book_info']) )
 							}
 
 				
-				$res1=mysql_query("select * from sv_services where $ser_id='$id' and lang_code='$lang'");
-				$fet1=mysql_fetch_array($res1);
+				$res1=mysqli_query($con, "select * from sv_services where $ser_id='$id' and lang_code='$lang'");
+				$fet1=mysqli_fetch_array($res1);
 				$ser_name.=$fet1['services_name'].'<br>';
 				$ser_name.=",";
 								
-				$res2=mysql_query("select * from sv_seller_services where services_id='$id'");
-				$fet2=mysql_fetch_array($res2);
+				$res2=mysqli_query($con, "select * from sv_seller_services where services_id='$id'");
+				$fet2=mysqli_fetch_array($res2);
 				 $price.=$fet2['price'].'<br>';
 				$price.=","; 
 				
@@ -167,9 +167,9 @@ if(isset($_REQUEST['book_info']) )
 		  <table class="table table-striped table-bordered table-hover" id="dataTables-example">
             <thead>
                 <tr>
-                    <th><?php echo get_record(237,$lang,$en);?></th>
-					<th><?php echo get_record(196,$lang,$en);?></th>
-					 <th><?php echo get_record(238,$lang,$en);?></th>
+                    <th><?php echo get_record(237,$lang,$en,$con);?></th>
+					<th><?php echo get_record(196,$lang,$en,$con);?></th>
+					 <th><?php echo get_record(238,$lang,$en,$con);?></th>
                 </tr>
             </thead>
 			<tbody>			
@@ -179,7 +179,7 @@ if(isset($_REQUEST['book_info']) )
 				<td> <?php echo $commission_amt; ?> (<?php echo $commission_mode; ?>)</td>
 
 			</tr>
-			<td class="total-charge" colspan="2"><?php echo get_record(239,$lang,$en);?></td><td class="total-charge"><?php echo $sum; ?>&nbsp;<?php echo $currency_mode; ?></td>
+			<td class="total-charge" colspan="2"><?php echo get_record(239,$lang,$en,$con);?></td><td class="total-charge"><?php echo $sum; ?>&nbsp;<?php echo $currency_mode; ?></td>
 			</tbody>
 															
             </table>
@@ -195,7 +195,7 @@ if(isset($_REQUEST['book_info']) )
 <div class="col-md-8"></div>
 <!--<a href="view_booking.php?total=<?php echo $sum; ?>"><button type="submit" value="PROCEED TO CHECKOUT" class="booknow right">PROCEED TO CHECKOUT</button></a>-->
 <div class="col-md-4">
-<a href="view_booking.php?total"><button type="submit" value="PROCEED TO CHECKOUT" class="booknow right"><?php echo get_record(240,$lang,$en);?></button></a>
+<a href="view_booking.php?total"><button type="submit" value="PROCEED TO CHECKOUT" class="booknow right"><?php echo get_record(240,$lang,$en,$con);?></button></a>
 </div>
 </div>
 <?php } ?>
@@ -205,24 +205,24 @@ if(isset($_SESSION['sum'])) {
 if(isset($_REQUEST['total']))
 	{	
 		//$total_amt = $_REQUEST['total'];
-		$total_amt=mysql_real_escape_string($_SESSION['sum']);
+		$total_amt=mysqli_real_escape_string($_SESSION['sum']);
 		
-		$fet=mysql_fetch_array(mysql_query("select * from sv_booking  where phone_no='$phone_no' order by id DESC limit 1"));
+		$fet=mysqli_fetch_array(mysqli_query($con, "select * from sv_booking  where phone_no='$phone_no' order by id DESC limit 1"));
 		$last_id=$fet['id'];
 		
-		$res=mysql_query("update sv_booking set total_amt='$total_amt' where phone_no='$phone_no' and id='$last_id'");	
+		$res=mysqli_query($con, "update sv_booking set total_amt='$total_amt' where phone_no='$phone_no' and id='$last_id'");	
 		
 		$last_shop_id=$fet['shop_id'];
-		$fet1=mysql_fetch_array(mysql_query("select * from sv_shop where id='$last_shop_id'"));
+		$fet1=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$last_shop_id'"));
 		$pno=$fet1['phone_no'];
-		$fet2=mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$pno'"));
+		$fet2=mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$pno'"));
 		$seller_email=$fet2['email'];
 		
 		
 		require("../smtp/class.phpmailer.php");
 		/*----------------------------user email--------------------------*/
 		 $subject = 'Booking Details'; 
-			$booking_query = mysql_fetch_array(mysql_query("select * from sv_booking where phone_no='$phone_no' order by id DESC limit 1"));
+			$booking_query = mysqli_fetch_array(mysqli_query($con, "select * from sv_booking where phone_no='$phone_no' order by id DESC limit 1"));
 			$sid=$booking_query['services_id'];
 			$booking_time=$booking_query['booking_time'];
 			if($booking_time>12)
@@ -234,7 +234,7 @@ if(isset($_REQUEST['total']))
 			{
 				$final_time=$booking_time."AM";
 			}
-			$query2=mysql_fetch_array(mysql_query("select * from sv_services where id='$sid'"));
+			$query2=mysqli_fetch_array(mysqli_query($con, "select * from sv_services where id='$sid'"));
 			 $sel=explode("," , $sid);
 			$lev=count($sel);
 			$ser_name="";
@@ -254,8 +254,8 @@ if(isset($_REQUEST['total']))
 							}
 
 				
-				$res1=mysql_query("select * from sv_services where $ser_id='$id'");
-				$fet1=mysql_fetch_array($res1);
+				$res1=mysqli_query($con, "select * from sv_services where $ser_id='$id'");
+				$fet1=mysqli_fetch_array($res1);
 				$ser_name.=$fet1['services_name'].'<br>';
 				$ser_name.=",";
 				$ser_name=trim($ser_name,",");
@@ -290,10 +290,10 @@ if(isset($_REQUEST['total']))
 		'</body>'; 
 		
 		
-$user_det = mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$phone_no'"));
-$to      = mysql_real_escape_string($user_det['email']);            
+$user_det = mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$phone_no'"));
+$to      = mysqli_real_escape_string($user_det['email']);            
 $subject = 'Booking Details - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -356,9 +356,9 @@ if($mail_option=="smtp")
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($admin_email);            
+$to      = mysqli_real_escape_string($admin_email);            
 $subject = 'New Order Received  - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -421,9 +421,9 @@ if($mail_option=="smtp")
 		'All rights reserved @ '.$site_name. 
 		'</div>'. 
 		'</body>'; 
-$to      = mysql_real_escape_string($seller_email);            
+$to      = mysqli_real_escape_string($seller_email);            
 $subject = 'New Order Received - '.$site_name;  
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($admin_email);     
                     
 $headers  = "From: " . $from . "\r\n";
 $headers .= "MIME-Version: 1.0\r\n"; 
@@ -464,7 +464,7 @@ if($mail_option=="smtp")
 		$payment_mode=$fet['payment_mode'];
 		if($payment_mode=='cash')
 		{
-			mysql_query("update sv_booking set status='paid' where id='$last_id'");
+			mysqli_query($con, "update sv_booking set status='paid' where id='$last_id'");
 		}
 		if($payment_mode=='paypal')
 		{
@@ -484,7 +484,7 @@ if($mail_option=="smtp")
 
 ?>
 <?php if($payment_mode=='cash') {
-mysql_query("update sv_booking set status='paid' id='$last_id' where phone_no='$phone_no'");
+mysqli_query($con, "update sv_booking set status='paid' id='$last_id' where phone_no='$phone_no'");
 	?>
 <div class="container">
 	<div class="succ-msg">
@@ -505,7 +505,7 @@ if(!isset($_REQUEST['book_info']) && !isset($_REQUEST['total']))
 
 <?php 
 $sv_count="";
-$sv_per_hour=mysql_fetch_array(mysql_query("select * from sv_shop where id='$id'"));
+$sv_per_hour=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$id'"));
 $booking_per_hour=$sv_per_hour['booking_per_hour'];
 	
 	
@@ -518,13 +518,13 @@ $booking_per_hour=$sv_per_hour['booking_per_hour'];
 <div class="container booking-main">
 <div class="col-md-12">
 <div class="col-md-4">
-<h5><strong><?php echo get_record(100,$lang,$en);?><span class="star">*</span></strong></h5>
+<h5><strong><?php echo get_record(100,$lang,$en,$con);?><span class="star">*</span></strong></h5>
 <?php 
-$result=mysql_query("select * from sv_seller_services where phone_no='$pno'");
-while($query=mysql_fetch_array($result))
+$result=mysqli_query($con, "select * from sv_seller_services where phone_no='$pno'");
+while($query=mysqli_fetch_array($result))
 {
 	$services_id=$query['services_id'];
-	$services_query=mysql_fetch_array(mysql_query("select * from sv_services where id='$services_id'"));
+	$services_query=mysqli_fetch_array(mysqli_query($con, "select * from sv_services where id='$services_id'"));
 ?>
 	<div class="col-md-6">
 	<div class="booking list">
@@ -540,7 +540,7 @@ while($query=mysql_fetch_array($result))
 </div>
 
 <?php 
-$opening_days=mysql_fetch_array(mysql_query("select * from sv_shop where id='$id'"));
+$opening_days=mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$id'"));
 $booking_days=$opening_days['booking_opening_days'];
 $cur_date=date("Y-m-d");
 $exp_date=date("Y-m-d",strtotime($cur_date.'+'.$booking_days.'days'));
@@ -570,7 +570,7 @@ for($i=0;$i<$lev;$i++)
 <input type="hidden" id="services_id" name="services_id" value="<?php echo $services_id; ?>">
 
 
-<h5><strong><?php echo get_record(101,$lang,$en);?><span class="star">*</span></strong></h5>
+<h5><strong><?php echo get_record(101,$lang,$en,$con);?><span class="star">*</span></strong></h5>
 <script type="text/javascript">
   $(function() {
 
@@ -603,7 +603,7 @@ $("#datepicker").datepicker( "option", "maxDate", new Date(currentYear, currentM
 </div>
 <div class="col-md-4">
 
-<h5><strong><?php echo get_record(102,$lang,$en);?><span class="star">*</span></strong></h5>
+<h5><strong><?php echo get_record(102,$lang,$en,$con);?><span class="star">*</span></strong></h5>
 
 <select id="time" name="time" class="form-control time" required onchange="javascript:time_function(this.value)">
 
@@ -648,7 +648,7 @@ for($i=$start_time;$i<=$end_time;$i++)
 <input type="text" id="pin_code" required name="pin_code" class="form-control">
 </div>
 <div class="col-md-3">
-<h5><strong><?php echo get_record(103,$lang,$en);?><span class="star">*</span></strong></h5>
+<h5><strong><?php echo get_record(103,$lang,$en,$con);?><span class="star">*</span></strong></h5>
 <select id="payment_mode" name="payment_mode" class="form-control" required>
 	<option value="">None</option>
 	<!--<option value="cash">Cash</option>
@@ -656,7 +656,7 @@ for($i=$start_time;$i<=$end_time;$i++)
 	
 	<?php 
 					$set_id=1;
-		$row = mysql_fetch_array(mysql_query("select * from sv_admin_login where id='$set_id'"));	
+		$row = mysqli_fetch_array(mysqli_query($con, "select * from sv_admin_login where id='$set_id'"));	
 						
 							$catid=$row['payment_option'];
 							$sel= explode(",",$catid); 
@@ -682,30 +682,30 @@ for($i=$start_time;$i<=$end_time;$i++)
 if(!isset($_SESSION['phone_no'])) {
 	?>
 <div class="container">
-<h3 class="left"><?php echo get_record(136,$lang,$en);?></h3>
+<h3 class="left"><?php echo get_record(136,$lang,$en,$con);?></h3>
 
 <div class="form-group col-md-3">
-<label><?php echo get_record(132,$lang,$en);?><span class="star">*</span></label>
+<label><?php echo get_record(132,$lang,$en,$con);?><span class="star">*</span></label>
 <input type="text" id="name" required name="name" class="form-control">
 </div>
 
 <div class="form-group col-md-3">
-<label><?php echo get_record(93,$lang,$en);?><span class="star">*</span></label>
+<label><?php echo get_record(93,$lang,$en,$con);?><span class="star">*</span></label>
 <input type="number" id="pno" name="pno" required class="form-control">
 </div>
 
 <div class="form-group col-md-3">
-<label><?php echo get_record(94,$lang,$en);?><span class="star">*</span></label>
+<label><?php echo get_record(94,$lang,$en,$con);?><span class="star">*</span></label>
 <input type="password" id="pwd" name="pwd" required class="form-control">
 </div>
 
 <div class="form-group col-md-3">
-<label><?php echo get_record(97,$lang,$en);?><span class="star">*</span></label>
+<label><?php echo get_record(97,$lang,$en,$con);?><span class="star">*</span></label>
 <input type="email" id="email" name="email" required class="form-control">
 </div>
 
 <div class="form-group col-md-3">
-<label><?php echo get_record(98,$lang,$en);?><span class="star">*</span></label>
+<label><?php echo get_record(98,$lang,$en,$con);?><span class="star">*</span></label>
 <select id="gender" name="gender" class="form-control" required>
 	<option value="male">Male</option>	
 	<option value="female">Female</option>
@@ -714,7 +714,7 @@ if(!isset($_SESSION['phone_no'])) {
 </div>
 
 <div class="form-group col-md-3">
-<label><?php echo get_record(99,$lang,$en);?><span class="star">*</span></label>
+<label><?php echo get_record(99,$lang,$en,$con);?><span class="star">*</span></label>
 <select id="user_type" name="user_type" class="form-control" required>
 	<option value="">None</option>
 	<option value="customer">Customer</option>	
@@ -726,7 +726,7 @@ if(!isset($_SESSION['phone_no'])) {
 
 <div class="container">
 <div class="col-md-2">
-<input type="submit"  value="<?php echo get_record(137,$lang,$en);?>" name="submit" class="booknow right">
+<input type="submit"  value="<?php echo get_record(137,$lang,$en,$con);?>" name="submit" class="booknow right">
 </div>
 </div>
 </form>

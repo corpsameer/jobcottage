@@ -47,8 +47,8 @@
     -webkit-touch-callout: none; }
   .owl-carousel .owl-item img {
     display: block;
-    width: 100%; 
-    min-height: 250px; }
+    width: 100%;
+    min-height: 250px;}
   .owl-carousel .owl-nav.disabled,
   .owl-carousel .owl-dots.disabled {
     display: none; }

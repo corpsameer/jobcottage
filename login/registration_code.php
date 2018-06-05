@@ -3,20 +3,20 @@ ob_start();
 include('../database/connection.php');
 require("../smtp/class.phpmailer.php");
 
-$user_name=mysql_real_escape_string($_POST['user_name']);
-$phone_no=mysql_real_escape_string($_POST['phone_no']);
-$email=mysql_real_escape_string($_POST['email']);
-$password=mysql_real_escape_string($_POST['password']); 
+$user_name=mysqli_real_escape_string($con, $_POST['user_name']);
+$phone_no=mysqli_real_escape_string($con, $_POST['phone_no']);
+$email=mysqli_real_escape_string($con, $_POST['email']);
+$password=mysqli_real_escape_string($con, $_POST['password']); 
 $pwd=md5($password);
-$gender=mysql_real_escape_string($_POST['gender']);
-$user_type=mysql_real_escape_string($_POST['user_type']);
+$gender=mysqli_real_escape_string($con, $_POST['gender']);
+$user_type=mysqli_real_escape_string($con, $_POST['user_type']);
 
 $cur_date=date("Y-m-d");
- $res=mysql_query("select * from sv_users where phone_no='$phone_no'");
-$numrow=mysql_num_rows($res);
+ $res=mysqli_query($con, "select * from sv_users where phone_no='$phone_no'");
+$numrow=mysqli_num_rows($res);
 if($numrow=="")
 {
-  mysql_query("insert into sv_users(user_name,phone_no,email,password,gender,user_type,curr_date)values('$user_name','$phone_no','$email','$pwd','$gender','$user_type','$cur_date')");
+  mysqli_query($con, "insert into sv_users(user_name,phone_no,email,password,gender,user_type,curr_date)values('$user_name','$phone_no','$email','$pwd','$gender','$user_type','$cur_date')");
 ?>	
 <!---------Mail function ------------>
 <?php 
@@ -44,9 +44,9 @@ $message = '<!DOCTYPE HTML>'.
 '</div>'. 
 '</body>'; 
 /*EMAIL TEMPLATE ENDS*/ 
-$to      = mysql_real_escape_string($email);             // give to email address 
+$to      = mysqli_real_escape_string($con, $email);             // give to email address 
 $subject = 'Account Details - '.$site_name;  //change subject of email 
-$from    =  mysql_real_escape_string($admin_email);     
+$from    =  mysqli_real_escape_string($con, $admin_email);     
                      // give from email address 
 // mandatory headers for email message, change if you need something different in your setting. 
 $headers  = "From: " . $from . "\r\n";

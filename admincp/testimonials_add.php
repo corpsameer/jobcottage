@@ -52,13 +52,13 @@ if($type=='add')
 			   }
 			   else
 			   {
-				    $checkwel=mysql_query("select * from sv_testimonials where testi_img='$file_name' and page_parent='0'");
-					$rowline=mysql_fetch_array($checkwel);
-					$checkrow=mysql_num_rows($checkwel);
+				    $checkwel=mysqli_query($con, "select * from sv_testimonials where testi_img='$file_name' and page_parent='0'");
+					$rowline=mysqli_fetch_array($checkwel);
+					$checkrow=mysqli_num_rows($checkwel);
 					$checkid=$rowline['id'];
 					if($checkrow==0)
 					{
-				    $page_parent=mysql_insert_id();
+				    $page_parent=mysqli_insert_id();
 					}
 					else
 					{
@@ -67,9 +67,9 @@ if($type=='add')
 				  
 			   }
 			   
-				mysql_query("SET NAMES utf8");
-		       mysql_query("SET CHARACTER SET utf8");
-				mysql_query("insert into sv_testimonials(testi_img,description,name,lang_code,page_parent)values('$file_name','$pagedesc','$pagename','$code','$page_parent')");
+				mysqli_query($con, "SET NAMES utf8");
+		       mysqli_query($con, "SET CHARACTER SET utf8");
+				mysqli_query($con, "insert into sv_testimonials(testi_img,description,name,lang_code,page_parent)values('$file_name','$pagedesc','$pagename','$code','$page_parent')");
 				
 			   
 			}
@@ -86,8 +86,8 @@ else if($type=='update')
 	$id=$_POST['id'];
 	$desc=$_POST['desc'];
 	$name=$_POST['name'];
-	$res=mysql_query("select * from sv_testimonials where id='$id'");
-	$fet=mysql_fetch_array($res);
+	$res=mysqli_query($con, "select * from sv_testimonials where id='$id'");
+	$fet=mysqli_fetch_array($res);
 	$old_file="../testi-img/".$fet['testi_img'];
 	$file_name = $_FILES['testi_img']['name'];
 	$random_digit=rand(0000,9999);
@@ -117,8 +117,8 @@ else if($type=='update')
 	}
 	else 
 	{
-		$old_file=mysql_real_escape_string($fet['testi_img']);
-		$file_name=mysql_real_escape_string($old_file);
+		$old_file=mysqli_real_escape_string($con, $fet['testi_img']);
+		$file_name=mysqli_real_escape_string($old_file);
 	}
 	if($flag=="0")
 	{		
@@ -130,30 +130,30 @@ else if($type=='update')
 		$pagedesc=$desc[$index];
 			if($code==$en)
 			{
-				mysql_query("SET NAMES utf8");
-		       mysql_query("SET CHARACTER SET utf8");
-				mysql_query("update sv_testimonials set testi_img='$file_name',description='$pagedesc',name='$pagename',lang_code='$en' where id='$id'");
+				mysqli_query($con, "SET NAMES utf8");
+		       mysqli_query($con, "SET CHARACTER SET utf8");
+				mysqli_query($con, "update sv_testimonials set testi_img='$file_name',description='$pagedesc',name='$pagename',lang_code='$en' where id='$id'");
 			}
 			else
 			{
 				
 				
 				
-				$numqry=mysql_query("select * from sv_testimonials where lang_code='$code' and page_parent='$id'");
+				$numqry=mysqli_query($con, "select * from sv_testimonials where lang_code='$code' and page_parent='$id'");
 				
-				$numrows=mysql_num_rows($numqry);
+				$numrows=mysqli_num_rows($numqry);
 				
 				if($numrows==0)
 				{
-					mysql_query("SET NAMES utf8");
-		            mysql_query("SET CHARACTER SET utf8");
-					mysql_query("insert into sv_testimonials (testi_img,description,name,lang_code,page_parent) values ('$file_name','$pagedesc','$pagename','$code','$id')");
+					mysqli_query($con, "SET NAMES utf8");
+		            mysqli_query($con, "SET CHARACTER SET utf8");
+					mysqli_query($con, "insert into sv_testimonials (testi_img,description,name,lang_code,page_parent) values ('$file_name','$pagedesc','$pagename','$code','$id')");
 				}
 				if($numrows==1)
 				{
-					mysql_query("SET NAMES utf8");
-		            mysql_query("SET CHARACTER SET utf8");
-					mysql_query("update sv_testimonials set testi_img='$file_name',description='$pagedesc',name='$pagename' where page_parent='$id' and lang_code='$code'");
+					mysqli_query($con, "SET NAMES utf8");
+		            mysqli_query($con, "SET CHARACTER SET utf8");
+					mysqli_query($con, "update sv_testimonials set testi_img='$file_name',description='$pagedesc',name='$pagename' where page_parent='$id' and lang_code='$code'");
 				}
 				
 				
@@ -183,10 +183,10 @@ else if($type=='update')
 
 if($_REQUEST['type']=='delete')
 {
-	$hid=mysql_real_escape_string($_REQUEST["hid"]);
+	$hid=mysqli_real_escape_string($con, $_REQUEST["hid"]);
     unlink('../testi-img/'.$_REQUEST['simage']);
-mysql_query("delete from sv_testimonials where id='$hid'");
-	mysql_query("delete from sv_testimonials where page_parent='$hid'");	
+mysqli_query($con, "delete from sv_testimonials where id='$hid'");
+	mysqli_query($con, "delete from sv_testimonials where page_parent='$hid'");	
 	
 	$msg="Deleted";	
 		header("Location:home-testimonials.php?msg=".$msg);

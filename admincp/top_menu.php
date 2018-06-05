@@ -1,13 +1,13 @@
 <?php
  include("../database/connection.php");
- $res=mysql_fetch_array(mysql_query("select * from sv_admin_login"));		
-	$admin_email=mysql_real_escape_string($res['email_id']);
-	$site_name=mysql_real_escape_string($res['site_name']);
-	$logo=mysql_real_escape_string($res['logo']);	
-	$favicon=mysql_real_escape_string($res['favicon']);
-	$site_desc=mysql_real_escape_string($res['site_desc']);
-	$keyword=mysql_real_escape_string($res['keyword']);
-	$site_url=mysql_real_escape_string($res['site_url']);
+ $res=mysqli_fetch_array(mysqli_query($con, "select * from sv_admin_login"));
+	$admin_email=mysqli_real_escape_string($con, $res['email_id']);
+	$site_name=mysqli_real_escape_string($con, $res['site_name']);
+	$logo=mysqli_real_escape_string($con, $res['logo']);
+	$favicon=mysqli_real_escape_string($con, $res['favicon']);
+	$site_desc=mysqli_real_escape_string($con, $res['site_desc']);
+	$keyword=mysqli_real_escape_string($con, $res['keyword']);
+	$site_url=mysqli_real_escape_string($con, $res['site_url']);
 ?>
 <head>
        <meta charset="utf-8" />
@@ -19,7 +19,7 @@
      <!-- FontAwesome Styles-->
     <link href="css/font-awesome.css" rel="stylesheet" />
      <!-- Morris Chart Styles-->
-   
+
         <!-- Custom Styles-->
     <link href="css/custom-styles.css" rel="stylesheet" />
 
@@ -33,7 +33,7 @@
 	    <link href="css/style.css" rel="stylesheet" />
 	  	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-		
+
 		<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -47,12 +47,12 @@
 if(!isset($_SESSION['user']))
 	header("Location:index.php");
 else
-{		
-	$user_name=mysql_real_escape_string($_SESSION['user']);			
-	$res=mysql_fetch_array(mysql_query("select * from sv_admin_login where user_name='$user_name'"));
-	$uname=mysql_real_escape_string($res['user_name']);
-	$site_name=mysql_real_escape_string($res['site_name']);
-}	
+{
+	$user_name=mysqli_real_escape_string($con, $_SESSION['user']);
+	$res=mysqli_fetch_array(mysqli_query($con, "select * from sv_admin_login where user_name='$user_name'"));
+	$uname=mysqli_real_escape_string($con, $res['user_name']);
+	$site_name=mysqli_real_escape_string($con, $res['site_name']);
+}
 ?>
 
 <nav class="navbar navbar-default top-navbar" role="navigation">
@@ -63,7 +63,7 @@ else
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-				
+
                <a class="navbar-brand" href="<?php echo $site_url;?>"><strong class="site_name"><?php echo $site_name; ?></strong></a>
             </div>
 
@@ -85,19 +85,19 @@ else
                     <!-- /.dropdown-user -->
                 </li>
                 <!-- /.dropdown -->
-            
+
 			 <li class="dropdown">
-                    <a href="logout.php">					
+                    <a href="logout.php">
                         <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    </a>                   
+                    </a>
                 </li>
 			</ul>
         </nav>
-		
+
         <!--/. NAV TOP  -->
 		  <!-- jQuery Js -->
     <script src="js/jquery-1.10.2.js"></script>
-	
+
        <script src="js/custom-scripts.js"></script>
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

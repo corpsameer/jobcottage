@@ -2,7 +2,7 @@
  include("../header.php");
 ?>
 <?php 
-$query=mysql_fetch_array(mysql_query("select * from sv_pages where id=4"));
+$query=mysqli_fetch_array(mysqli_query($con, "select * from sv_pages where id=4"));
 $content=$query['page_content'];
 $page_name=$query['page_name'];
 ?>

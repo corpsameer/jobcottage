@@ -3,8 +3,8 @@
 <?php include("../database/connection.php"); ?>
 
 <?php 
-	$res=mysql_query("select * from sv_admin_login");
-	$row=mysql_num_rows($res);
+	$res=mysqli_query($con, "select * from sv_admin_login");
+	$row=mysqli_num_rows($res);
 		if($row==0)
 	 	{
 			$admin_id="";
@@ -30,45 +30,45 @@
 			}
 		else
 		{			
-			$fet=mysql_fetch_array($res);	
-			$admin_id=mysql_real_escape_string($fet['id']);
-			$email_id=mysql_real_escape_string($fet['email_id']);
-			$admin_name=mysql_real_escape_string($fet['user_name']);	
-			$site_name=mysql_real_escape_string($fet['site_name']);
-			$logo=mysql_real_escape_string($fet['logo']);	
-			$favicon=mysql_real_escape_string($fet['favicon']);	
-			$site_desc=mysql_real_escape_string($fet['site_desc']);	
-			$keyword=mysql_real_escape_string($fet['keyword']);
-			$site_url=mysql_real_escape_string($fet['site_url']);	
-			$smtp_host=mysql_real_escape_string($fet['smtp_host']);
-			$smtp_uname=mysql_real_escape_string($fet['smtp_uname']);
-			$smtp_pwd=mysql_real_escape_string($fet['smtp_pwd']);
-			$smtp_port=mysql_real_escape_string($fet['smtp_port']);
-			$mail_option=mysql_real_escape_string($fet['mail_option']);
-			$cmode=mysql_real_escape_string($fet['currency_mode']);
-			$paypal_id=mysql_real_escape_string($fet['paypal_id']);
+			$fet=mysqli_fetch_array($res);	
+			$admin_id=mysqli_real_escape_string($con, $fet['id']);
+			$email_id=mysqli_real_escape_string($con, $fet['email_id']);
+			$admin_name=mysqli_real_escape_string($con, $fet['user_name']);	
+			$site_name=mysqli_real_escape_string($con, $fet['site_name']);
+			$logo=mysqli_real_escape_string($con, $fet['logo']);	
+			$favicon=mysqli_real_escape_string($con, $fet['favicon']);	
+			$site_desc=mysqli_real_escape_string($con, $fet['site_desc']);	
+			$keyword=mysqli_real_escape_string($con, $fet['keyword']);
+			$site_url=mysqli_real_escape_string($con, $fet['site_url']);	
+			$smtp_host=mysqli_real_escape_string($con, $fet['smtp_host']);
+			$smtp_uname=mysqli_real_escape_string($con, $fet['smtp_uname']);
+			$smtp_pwd=mysqli_real_escape_string($con, $fet['smtp_pwd']);
+			$smtp_port=mysqli_real_escape_string($con, $fet['smtp_port']);
+			$mail_option=mysqli_real_escape_string($con, $fet['mail_option']);
+			$cmode=mysqli_real_escape_string($con, $fet['currency_mode']);
+			$paypal_id=mysqli_real_escape_string($con, $fet['paypal_id']);
 			
-			$salt_id=mysql_real_escape_string($fet['salt_id']);
-			$merchant_id = mysql_real_escape_string($fet['merchant_id']);
-			$payu_mode = mysql_real_escape_string($fet['payu_mode']);
+			$salt_id=mysqli_real_escape_string($con, $fet['salt_id']);
+			$merchant_id = mysqli_real_escape_string($con, $fet['merchant_id']);
+			$payu_mode = mysqli_real_escape_string($con, $fet['payu_mode']);
 			
 			
 			
-			$stripe_mode = mysql_real_escape_string($fet['stripe_mode']);
-			$live_publish_key = mysql_real_escape_string($fet['live_publish_key']);
-			$live_secret_key = mysql_real_escape_string($fet['live_secret_key']);
-			$test_publish_key = mysql_real_escape_string($fet['test_publish_key']);
-			$test_secret_key = mysql_real_escape_string($fet['test_secret_key']);
+			$stripe_mode = mysqli_real_escape_string($con, $fet['stripe_mode']);
+			$live_publish_key = mysqli_real_escape_string($con, $fet['live_publish_key']);
+			$live_secret_key = mysqli_real_escape_string($con, $fet['live_secret_key']);
+			$test_publish_key = mysqli_real_escape_string($con, $fet['test_publish_key']);
+			$test_secret_key = mysqli_real_escape_string($con, $fet['test_secret_key']);
 						
 						
 						
 						
 			
-			$smode=mysql_real_escape_string($fet['paypal_site_mode']);
-			$withdraw_amt=mysql_real_escape_string($fet['withdraw_amt']);
-			$withdraw_option=mysql_real_escape_string($fet['withdraw_option']);
-			$commission_mode=mysql_real_escape_string($fet['commission_mode']);
-			$commission_amt=mysql_real_escape_string($fet['commission_amt']);
+			$smode=mysqli_real_escape_string($con, $fet['paypal_site_mode']);
+			$withdraw_amt=mysqli_real_escape_string($con, $fet['withdraw_amt']);
+			$withdraw_option=mysqli_real_escape_string($con, $fet['withdraw_option']);
+			$commission_mode=mysqli_real_escape_string($con, $fet['commission_mode']);
+			$commission_amt=mysqli_real_escape_string($con, $fet['commission_amt']);
 			
 		}	
 		$page = 'setting';
@@ -445,8 +445,8 @@ else
 							<label>Payment Option</label>	
 								<select name="paymentopt[]" multiple id="paymentopt" class="sv_multiselect">
 								<?php	
-										$reser=mysql_query("select * from sv_admin_login");
-										while($rower=mysql_fetch_array($reser))
+										$reser=mysqli_query($con, "select * from sv_admin_login");
+										while($rower=mysqli_fetch_array($reser))
 										{
 											$catider=$rower['payment_option'];
 											$seler=explode(",",$catider);
@@ -484,8 +484,8 @@ else
 							<label>Withdraw Option</label>	
 								<select name="langOpt[]" multiple id="langOpt" class="sv_multiselect">
 								<?php	
-										$res=mysql_query("select * from sv_admin_login");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_admin_login");
+										while($row=mysqli_fetch_array($res))
 										{
 											$catid=$row['withdraw_option'];
 											$sel=explode(",",$catid);
@@ -534,8 +534,8 @@ else
 						<div class="col-lg-6 col-md-6 col-sm-6">
 						<div class="form-group">
 						<?php 
-						$all_lang=mysql_query("select * from sv_language order by lang_id asc");
-						while($rowlang=mysql_fetch_array($all_lang)){
+						$all_lang=mysqli_query($con, "select * from sv_language order by lang_id asc");
+						while($rowlang=mysqli_fetch_array($all_lang)){
 						?>
 							<div style="line-height:30px;">
 							<input type="checkbox" name="choose_language[]" value="<?php echo $rowlang['lang_id'];?>" <?php if($rowlang['lang_id']==1){?> onclick="return false" onkeydown="return false" <?php } ?> <?php if($rowlang['lang_status']==1){?> checked <?php } ?>> <span style="top:-1px; position:relative;"><?php echo $rowlang['lang_name'];?></span><br/>

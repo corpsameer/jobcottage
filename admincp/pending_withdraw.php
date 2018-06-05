@@ -79,16 +79,16 @@ else
 									<tbody>
 									<?php		
 									$sno=0;
-									$res=mysql_query("select * from sv_withdraw_request where status='pending' ORDER BY id DESC");
-									while($row=mysql_fetch_array($res))
+									$res=mysqli_query($con, "select * from sv_withdraw_request where status='pending' ORDER BY id DESC");
+									while($row=mysqli_fetch_array($res))
 									{
 										$sno++;
-										$id=mysql_real_escape_string($row['id']);
-										$shop_id=mysql_real_escape_string($row['shop_id']);
-										$sv_shop= mysql_fetch_array(mysql_query("select * from sv_shop where id='$shop_id' "));
+										$id=mysqli_real_escape_string($con, $row['id']);
+										$shop_id=mysqli_real_escape_string($con, $row['shop_id']);
+										$sv_shop= mysqli_fetch_array(mysqli_query($con, "select * from sv_shop where id='$shop_id' "));
 										$pno=$sv_shop['phone_no'];
 										
-										$sv_email= mysql_fetch_array(mysql_query("select * from sv_users where phone_no='$pno' "));
+										$sv_email= mysqli_fetch_array(mysqli_query($con, "select * from sv_users where phone_no='$pno' "));
 
 
 									?>

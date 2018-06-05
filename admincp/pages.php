@@ -7,10 +7,10 @@
 if(isset($_REQUEST['id']))
 	{		
 		$id=$_REQUEST['id'];
-		$res=mysql_query("select * from sv_pages where id='$id'");
-		$row=mysql_num_rows($res);
+		$res=mysqli_query($con, "select * from sv_pages where id='$id'");
+		$row=mysqli_num_rows($res);
 				
-			$fet=mysql_fetch_array($res);	
+			$fet=mysqli_fetch_array($res);	
 			$id=$fet['id'];
 			$page_name=$fet['page_name'];	
 			$page_content=$fet['page_content'];					
@@ -113,8 +113,8 @@ else
 					<div class="form-group">
                    
                      <ul class="nav nav-tabs">
-					 <?php $activelang=mysql_query("select * from sv_language where lang_status='1' order by lang_id asc");
-					 while($rowlang=mysql_fetch_array($activelang)){?>
+					 <?php $activelang=mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc");
+					 while($rowlang=mysqli_fetch_array($activelang)){?>
         <li class="<?php if($rowlang['lang_id']==1){?>active<?php } ?>"><a data-toggle="tab" href="#section<?php echo $rowlang['lang_id'];?>"><img src="<?php echo $site_url; ?>admincp/img/<?php echo $rowlang['lang_flag'];?>" style="max-width:24px; max-height:24px;"> <span style="position:relative;top:2px;"><?php echo $rowlang['lang_name'];?></span></a></li>
 					 <?php } ?>
 		
@@ -123,22 +123,22 @@ else
 	   
 	   
                       		<div class="tab-content">
-							 <?php $activelang_des=mysql_query("select * from sv_language where lang_status='1' order by lang_id asc");
-					 while($rowlang_des=mysql_fetch_array($activelang_des)){?>
+							 <?php $activelang_des=mysqli_query($con, "select * from sv_language where lang_status='1' order by lang_id asc");
+					 while($rowlang_des=mysqli_fetch_array($activelang_des)){?>
         <div id="section<?php echo $rowlang_des['lang_id'];?>" class="tab-pane fade in <?php if($rowlang_des['lang_id']==1){?>active<?php } ?>">
 		<?php $id=$_REQUEST['id'];
-		mysql_query("SET NAMES utf8");
-		mysql_query("SET CHARACTER SET utf8");
+		mysqli_query($con, "SET NAMES utf8");
+		mysqli_query($con, "SET CHARACTER SET utf8");
 		if($rowlang_des['lang_code']==$en)
 		{
-		$viewpage=mysql_query("select * from sv_pages where id='$id' and page_parent='0'");
-		$onerow=mysql_fetch_array($viewpage);
+		$viewpage=mysqli_query($con, "select * from sv_pages where id='$id' and page_parent='0'");
+		$onerow=mysqli_fetch_array($viewpage);
 		}
 		else
 		{ 
 	        $langcode=$rowlang_des['lang_code'];
-			$viewpage=mysql_query("select * from sv_pages where lang_code='$langcode' and page_parent='$id'");
-		    $onerow=mysql_fetch_array($viewpage);
+			$viewpage=mysqli_query($con, "select * from sv_pages where lang_code='$langcode' and page_parent='$id'");
+		    $onerow=mysqli_fetch_array($viewpage);
 		}
 		
 		?>
@@ -190,8 +190,8 @@ else
 									<tbody>
 									<?php
 										$sno=0;
-										$res=mysql_query("select * from sv_pages where page_parent='0' and lang_code='$en'");
-										while($row=mysql_fetch_array($res))
+										$res=mysqli_query($con, "select * from sv_pages where page_parent='0' and lang_code='$en'");
+										while($row=mysqli_fetch_array($res))
 										{
 											$sno++;
 											$id=$row['id'];				

@@ -2,13 +2,13 @@
 include('../database/connection.php');
 @session_start();
 $image=$_POST['image'];
-$res=mysql_query("select * from sv_widget");
-$row=mysql_num_rows($res);
-$fet=mysql_fetch_array($res);
+$res=mysqli_query($con, "select * from sv_widget");
+$row=mysqli_num_rows($res);
+$fet=mysqli_fetch_array($res);
 $id=$fet['id'];
 if($row=="0")
 {
-	if(mysql_query("insert into sv_widget(image)values('$image')"))
+	if(mysqli_query($con, "insert into sv_widget(image)values('$image')"))
 		{
 			$msg="Inserted";
 			header("Location:widget.php?msg=".$msg);			
@@ -16,7 +16,7 @@ if($row=="0")
 }
 else
 {	
-	if(mysql_query("update sv_widget set image='$image' where id='$id'")) 
+	if(mysqli_query($con, "update sv_widget set image='$image' where id='$id'")) 
 	{
 		$msg="Updated";
 		header("Location:widget.php?msg=".$msg);
